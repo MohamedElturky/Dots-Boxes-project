@@ -3,4 +3,6 @@
 
 int main()[
 printf("Hello world");
+int n;
+scanf("%d",&n);
 ]
