@@ -6,7 +6,6 @@ int main()
 {
 Hello_to_Game ();
 Determine_Dim (boardDim);
-
-
+printf("Hello");
     return 0;
 }
