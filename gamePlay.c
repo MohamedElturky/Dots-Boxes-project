@@ -83,7 +83,7 @@ void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,
    player2_turn(board_horiz,board_vert,p1,p2); // it is time for the another player move
   }
    else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[r1-1][c1-1]!='|') { // here are the conditions for input if the input is vertical
-    board_vert[(r2>c1)?(r1-1):(r2-1)][c1-1]='|';
+    board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]='|';
     print_board(board_horiz,board_vert,Size);
     Game_score(board_horiz,board_vert,Size,p1,p2,(p1));
     print_scores(*p1,*p2);
@@ -108,7 +108,7 @@ void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,
    player1_turn(board_horiz,board_vert,p1,p2);
   }
    else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[r1-1][c1-1]!='|') {
-    board_vert[(r2>c1)?(r1-1):(r2-1)][c1-1]='|';
+    board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]='|';
     print_board(board_horiz,board_vert,Size);
     Game_score(board_horiz,board_vert,Size,p1,p2,(p2));
     print_scores(*p1,*p2);
@@ -124,19 +124,21 @@ void Human_vs_Human (int board_horiz [Size][Size],int board_vert [Size][Size],in
    initilaize_Board(board_horiz,board_vert);
    player1_turn(board_horiz,board_vert,p1,p2); // here the first turn will be called
 }
-void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int Size,int* p1,int* p2,int* Current_Player_Score){
-    int count_scores=0;
+void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int Size,int* p1,int* p2,int* Current_Player_Score){ /* the most important function that calculates scores VIP ,
+                                                            Note:the last parameter is to detect the current player that has made the last turn and it has previous value of either p1 or p2 depem*/
+
+    int count_scores=0; //create var to store the sum scores for both players
     for (int row=0 ; row<Size-1 ;row++){
         for (int column=0 ; column<Size-1 ;column++){
             if (board_horiz[row][column]=='-' && board_vert[row][column]=='|' && board_horiz[row+1][column]=='-' && board_vert[row][column+1]=='|'){
-                count_scores++;
-
+                count_scores++; /*looping inside both horizontal and vertical array and check if the box is filled by using the above conditions
+                                  then adding 1 for each score in the variable count_scores */
             }
 
         }
     }
-     if (count_scores> *(p1) + *(p2)){
-                    *Current_Player_Score += count_scores - (*p1 + *p2);
+     if (count_scores> *(p1) + *(p2)){//the next step if the score is updated during the last turn the var count_scores will be greater than sum of both scores recorded
+                    *Current_Player_Score += count_scores - (*p1 + *p2);//here the
                     if(*Current_Player_Score == *p1) {
                         print_scores(*p1,*p2);
                         player1_turn(board_horiz,board_vert,p1,p2);
