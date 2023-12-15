@@ -1,1 +1,9 @@
 <h1>This is the official repo of Dots and boxes project</h1>
+<h3>Tasks done yet</h3>
+1-the gameplay with all conditions except for DFS 
+2-user interface with all fields required except for (number of dots remaining)
+<h3>remaining tasks</h3>
+1- save & load pages
+2- rank pages
+3- input color
+4- computer mode
