@@ -6,7 +6,12 @@ extern int board2_horiz[6][6];
 extern int board2_vert[6][6];
 extern int r1,r2,c1,c2;
 extern int Size;
-extern int player1_score,player2_score;
+//extern int player1_score,player2_score;
+typedef struct player {
+ char name[100];
+ int score;
+ int numOfMoves;
+}player;
 void initilaize_Board();
 void Determine_Dim ();
 void Hello_to_Game ();

@@ -9,7 +9,7 @@ int board2_horiz [6][6];
 int board2_vert [6][6];
 int r1,r2,c1,c2;
 int Size;
-int player1_score=0;player2_score=0;
+
 
 int main()
 {

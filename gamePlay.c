@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include<stdlib.h>
 #include <math.h>
+#include <time.h>
 #include "functions.h"
+clock_t startTime; //global var for time
 
 void initilaize_Board(int board_horiz [Size][Size],int board_vert [Size][Size]){ //initializing the board
       int row=0,column=0;
@@ -67,9 +69,10 @@ void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int Size
    }
 
 }
-void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,int*p2){ //player 1 turn func with parameters 1-the horizontal array 2-the vertical array 3-pointer to player 1 score 4-pointer to player 2 score
+void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,int*p2,int*n1,int*n2){ //player 1 turn func with parameters 1-the horizontal array 2-the vertical array 3-pointer to player 1 score 4-pointer to player 2 score
   End_Game(Size,p1,p2); // check if the game has ended
   printf("Player 1 turn Enter (RRCC) ");
+  clock_t start = clock();
   scanf("%1d%1d%1d%1d",&r1,&r2,&c1,&c2); // scanning the input
   while((r1>Size || r2>Size ||c1>Size || c2>Size ) || (r1<1||r2<1||c1<1||c2<1) ) { // conditions for the input of precise size between 1 and size
     printf("Enter a correct place\n\n");
@@ -78,23 +81,26 @@ void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,
   if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][c1-1]!='-'){ // here are the conditions for input if the input is horizontal  note: here i used the absolute function to neglect the order of input like 2212 and 2221
     board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]='-'; // assignment of move  note again: the ternary operator is used as caution of the input order
     print_board(board_horiz,board_vert,Size); // print the board
-    Game_score(board_horiz,board_vert,Size,p1,p2,(p1)); // calculating the score
-    print_scores(*p1,*p2); // print the scores
-   player2_turn(board_horiz,board_vert,p1,p2); // it is time for the another player move
+    (*n1)++;
+    Game_score(board_horiz,board_vert,Size,p1,p2,(p1),n1,n2); // calculating the score
+    print_scores(*p1,*p2,*n1,*n2); // print the scores
+    player2_turn(board_horiz,board_vert,p1,p2,n1,n2); // it is time for the another player move
   }
    else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[r1-1][c1-1]!='|') { // here are the conditions for input if the input is vertical
     board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]='|';
     print_board(board_horiz,board_vert,Size);
-    Game_score(board_horiz,board_vert,Size,p1,p2,(p1));
-    print_scores(*p1,*p2);
-   player2_turn(board_horiz,board_vert,p1,p2);
+    (*n1)++;
+    Game_score(board_horiz,board_vert,Size,p1,p2,(p1),n1,n2);
+    print_scores(*p1,*p2,*n1,*n2);
+    player2_turn(board_horiz,board_vert,p1,p2,n1,n2);
    }
    else{printf("Enter a correct place\n\n"); // another try to enter the input if it was wrong
-   player1_turn(board_horiz,board_vert,p1,p2);}
+   player1_turn(board_horiz,board_vert,p1,p2,n1,n2);}
 }
-void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,int*p2){ // same as player 1 func
+void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,int*p2,int*n1,int*n2){ // same as player 1 func
   End_Game(Size,p1,p2);
   printf("Player 2 turn Enter (RRCC) ");
+  clock_t start = clock();
   scanf("%1d%1d%1d%1d",&r1,&r2,&c1,&c2);
   while(( r1>Size|| r2>Size || c1>Size || c2>Size) || (r1<1||r2<1||c1<1||c2<1) ) {
     printf("Enter a correct place\n\n");
@@ -103,28 +109,39 @@ void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,
   if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][c1-1]!='-'){
     board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]='-';
     print_board(board_horiz,board_vert,Size);
-    Game_score(board_horiz,board_vert,Size,p1,p2,(p2));
-    print_scores(*p1,*p2);
-   player1_turn(board_horiz,board_vert,p1,p2);
+    (*n2)++;
+    Game_score(board_horiz,board_vert,Size,p1,p2,(p2),n1,n2);
+    print_scores(*p1,*p2,*n1,*n2);
+   player1_turn(board_horiz,board_vert,p1,p2,n1,n2);
   }
    else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[r1-1][c1-1]!='|') {
     board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]='|';
     print_board(board_horiz,board_vert,Size);
-    Game_score(board_horiz,board_vert,Size,p1,p2,(p2));
-    print_scores(*p1,*p2);
-   player1_turn(board_horiz,board_vert,p1,p2);
+    (*n2)++;
+    Game_score(board_horiz,board_vert,Size,p1,p2,(p2),n1,n2);
+    print_scores(*p1,*p2,*n1,*n2);
+   player1_turn(board_horiz,board_vert,p1,p2,n1,n2);
    }
    else{printf("Enter a correct place\n\n");
-   player2_turn(board_horiz,board_vert,p1,p2);}
+   player2_turn(board_horiz,board_vert,p1,p2,n1,n2);}
 }
 void Human_vs_Human (int board_horiz [Size][Size],int board_vert [Size][Size],int Size){ //choosing the mode  Note this func id called in Determine Dim func and will be changed later
-
-   int *p1=&player1_score; // referring the pointer to the address of score variable
-   int *p2=&player2_score;
+   player player1;
+   player player2;
+   player1.score=0;
+   player2.score=0;
+   player1.numOfMoves=0;
+   player2.numOfMoves=0;
+   startTime=clock();
+   int *n1=&player1.numOfMoves;
+   int *n2=&player2.numOfMoves;
+   int *p1=&player1.score; // referring the pointer to the address of score variable
+   int *p2=&player2.score;
    initilaize_Board(board_horiz,board_vert);
-   player1_turn(board_horiz,board_vert,p1,p2); // here the first turn will be called
+
+   player1_turn(board_horiz,board_vert,p1,p2,n1,n2); // here the first turn will be called
 }
-void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int Size,int* p1,int* p2,int* Current_Player_Score){ /* the most important function that calculates scores VIP ,
+void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int Size,int* p1,int* p2,int* Current_Player_Score,int*n1,int*n2){ /* the most important function that calculates scores VIP ,
                                                             Note:the last parameter is to detect the current player that has made the last turn and it has previous value of either p1 or p2 depem*/
 
     int count_scores=0; //create var to store the sum scores for both players
@@ -140,24 +157,28 @@ void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int Size
      if (count_scores> *(p1) + *(p2)){//the next step if the score is updated during the last turn the var count_scores will be greater than sum of both scores recorded
                     *Current_Player_Score += count_scores - (*p1 + *p2);//here the
                     if(*Current_Player_Score == *p1) {
-                        print_scores(*p1,*p2);
-                        player1_turn(board_horiz,board_vert,p1,p2);
+                        print_scores(*p1,*p2,*n1,*n2);
+                        player1_turn(board_horiz,board_vert,p1,p2,n1,n2);
                     }
                     else {
-                        print_scores(*p1,*p2);
-                        player2_turn(board_horiz,board_vert,p1,p2);
+                        print_scores(*p1,*p2,*n1,*n2);
+                        player2_turn(board_horiz,board_vert,p1,p2,n1,n2);
                     }
-                }
+     }
 }
-void print_scores (int player1_score, int player2_score){ //just printing the score ..boring..Zzz
-   printf("player 1 score : %d\n",player1_score);
-   printf("player 2 score : %d\n\n",player2_score);
+void print_scores (int score1, int score2,int move1, int move2){ //just printing the score , the No. of moves and time..boring..Zzz
+   clock_t endTime =clock();
+   printf("player 1 score : %d      player 1 No. of moves :%d\n",score1,move1);
+   printf("player 2 score : %d      player 2 No. of moves :%d\n",score2,move2);
+   double timePassed = (endTime-startTime)/CLOCKS_PER_SEC;
+   printf("time passed %d min %d sec\n",(int)(timePassed/60),(int)(((int)timePassed%60)));
 }
 void End_Game (int Size,int* p1,int* p2){ // func to check if the game has ended
-        if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line it will check if the  sum scores = equal the number of boxes and i think this approach is easier than looping
+        if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if the  sum of scores = equal the number of boxes and i think this approach is easier than looping
 
     if (*p1 > *p2) printf("Player 1 is the winner\n"); // no need for explanation
-    else printf("Player 2 is the winner\n");
+    else if (*p2 > *p1) printf("Player 2 is the winner\n");
+    else printf("Tie!");
     exit(0); // function to terminate the recursion
     }
 }
