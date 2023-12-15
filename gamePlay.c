@@ -72,7 +72,6 @@ void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int Size
 void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,int*p2,int*n1,int*n2){ //player 1 turn func with parameters 1-the horizontal array 2-the vertical array 3-pointer to player 1 score 4-pointer to player 2 score
   End_Game(Size,p1,p2); // check if the game has ended
   printf("Player 1 turn Enter (RRCC) ");
-  clock_t start = clock();
   scanf("%1d%1d%1d%1d",&r1,&r2,&c1,&c2); // scanning the input
   while((r1>Size || r2>Size ||c1>Size || c2>Size ) || (r1<1||r2<1||c1<1||c2<1) ) { // conditions for the input of precise size between 1 and size
     printf("Enter a correct place\n\n");
@@ -100,7 +99,6 @@ void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,
 void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,int*p2,int*n1,int*n2){ // same as player 1 func
   End_Game(Size,p1,p2);
   printf("Player 2 turn Enter (RRCC) ");
-  clock_t start = clock();
   scanf("%1d%1d%1d%1d",&r1,&r2,&c1,&c2);
   while(( r1>Size|| r2>Size || c1>Size || c2>Size) || (r1<1||r2<1||c1<1||c2<1) ) {
     printf("Enter a correct place\n\n");
@@ -112,7 +110,7 @@ void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,
     (*n2)++;
     Game_score(board_horiz,board_vert,Size,p1,p2,(p2),n1,n2);
     print_scores(*p1,*p2,*n1,*n2);
-   player1_turn(board_horiz,board_vert,p1,p2,n1,n2);
+    player1_turn(board_horiz,board_vert,p1,p2,n1,n2);
   }
    else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[r1-1][c1-1]!='|') {
     board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]='|';
@@ -120,7 +118,7 @@ void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int*p1,
     (*n2)++;
     Game_score(board_horiz,board_vert,Size,p1,p2,(p2),n1,n2);
     print_scores(*p1,*p2,*n1,*n2);
-   player1_turn(board_horiz,board_vert,p1,p2,n1,n2);
+    player1_turn(board_horiz,board_vert,p1,p2,n1,n2);
    }
    else{printf("Enter a correct place\n\n");
    player2_turn(board_horiz,board_vert,p1,p2,n1,n2);}
