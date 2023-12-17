@@ -104,10 +104,10 @@ void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 }
 void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ //player 1 turn func with parameters 1-the horizontal array 2-the vertical array 3-pointer to player 1 score 4-pointer to player 2 score
   End_Game(Size,p1,p2); // check if the game has ended
-  printf("Player 1 turn Enter (RRCC) ");
+  printf("\x1B[34m""Player 1 turn Enter (RRCC) ""\x1B[0m");
   while(scanf("%1d%1d%1d%1d%c",&r1,&r2,&c1,&c2,&extra) != 5 || extra != '\n'){ // scan and check if the input is not digits
-        printf("Enter a correct place\n");
-        printf("Player 1 turn Enter (RRCC): ");
+        printf("\x1B[34m""Enter a correct place\n""\x1B[0m");
+        printf("\x1B[34m""Player 1 turn Enter (RRCC): ""\x1B[0m");
         while (getchar()!='\n');
 }
   if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]==' '){ // here are the conditions for input if the input is horizontal  note: here i used the absolute function to neglect the order of input like 2212 and 2221
@@ -128,15 +128,15 @@ void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
     print_scores(Size,*p1,*p2,*n1,*n2);
     player2_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
    }
-   else{printf("Enter a correct place\n\n"); // another try to enter the input if it was wrong
+   else{printf("\x1B[34m""Enter a correct place\n""\x1B[0m"); // another try to enter the input if it was wrong
    player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
 void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ // same as player 1 func
   End_Game(Size,p1,p2);
-  printf("Player 2 turn Enter (RRCC) ");
+  printf("\x1B[31m""Player 2 turn Enter (RRCC) ""\x1B[0m");
    while(scanf("%1d%1d%1d%1d%c",&r1,&r2,&c1,&c2,&extra) != 5 || extra != '\n'){ // scan and check if the input is not digits
-        printf("Enter a correct place\n");
-        printf("Player 1 turn Enter (RRCC): ");
+        printf("\x1B[31m""Enter a correct place\n""\x1B[0m");
+        printf("\x1B[31m""Player 1 turn Enter (RRCC): ""\x1B[0m");
         while (getchar()!='\n');
 }
 
@@ -158,7 +158,7 @@ void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
     print_scores(Size,*p1,*p2,*n1,*n2);
     player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
    }
-   else{printf("Enter a correct place\n\n");
+   else{printf("\x1B[31m""Enter a correct place\n""\x1B[0m");
    player2_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
 void Human_vs_Human (int board_horiz [Size][Size],int board_vert [Size][Size],int s[Size][Size],int Size){ //choosing the mode  Note this func id called in Determine Dim func and will be changed later
@@ -213,8 +213,8 @@ void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 }
 void print_scores (int Size,int score1, int score2,int move1, int move2){ //just printing the score , the No. of moves and time..boring..Zzz
    clock_t endTime =clock();//end checkpoint for time
-   printf("\t\t\tplayer 1 score : %d                    player 2 score :%d\n",score1,score2);
-   printf("\t\t\tplayer 1 No. of moves : %d             player 2 No. of moves :%d\n\n",move1,move2);
+   printf("\x1B[34m""\t\t\tplayer 1 score : %d ""\x1B[0m""\x1B[31m""                   player 2 score :%d\n""\x1B[0m",score1,score2);
+   printf("\x1B[34m""\t\t\tplayer 1 No. of moves : %d   ""\x1B[0m""\x1B[31m""          player 2 No. of moves :%d\n\n""\x1B[0m",move1,move2);
    double timePassed = (endTime-startTime)/CLOCKS_PER_SEC;
    printf("\t\t\t\t\ttime passed %d min %d sec\n",(int)(timePassed/60),(int)(((int)timePassed%60)));//printing time
    if (Size==3) printf("\t\t\t\t\t %d dots remaining\n",12-(move1+move2));
