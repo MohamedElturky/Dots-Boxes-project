@@ -4,9 +4,12 @@ extern int board1_horiz[3][3]; // note the term extern is used to make this vari
 extern int board1_vert[3][3];
 extern int board2_horiz[6][6];
 extern int board2_vert[6][6];
+extern int s1[3][3];
+extern int s2[6][6];
 extern int r1,r2,c1,c2;
 extern int Size;
-//extern int player1_score,player2_score;
+extern char extra;
+extern FILE *savedGame;
 typedef struct player {
  char name[100];
  int score;
@@ -20,5 +23,5 @@ void player1_turn();
 void player2_turn();
 void Human_vs_Human();
 void Game_score();
-
+void save();
 #endif // FUNCTIONS_H_INCLUDED
