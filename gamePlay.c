@@ -98,6 +98,7 @@ void Game_main_menu (){ // hello friend :)
         case(1):
             clearScreen();
             new_game();
+            Determine_Dim (boardDim);
             break;
         case(2):
             clearScreen();

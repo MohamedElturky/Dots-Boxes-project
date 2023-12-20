@@ -21,7 +21,7 @@ int main()
 
 
 Game_main_menu ();
-Determine_Dim (boardDim);
+
 
     return 0;
 }
