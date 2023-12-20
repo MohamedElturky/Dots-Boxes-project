@@ -7,7 +7,7 @@ extern int board2_vert[6][6];
 extern int s1[3][3];
 extern int s2[6][6];
 extern int r1,r2,c1,c2;
-extern int Size;
+extern int Size,input;
 extern char extra;
 extern FILE *savedGame;
 typedef struct player {
@@ -17,7 +17,7 @@ typedef struct player {
 }player;
 void initilaize_Board();
 void Determine_Dim ();
-void Hello_to_Game ();
+void Game_main_menu ();
 void print_board();
 void player1_turn();
 void player2_turn();

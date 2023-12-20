@@ -40,22 +40,77 @@ while(scanf("%1d%c",&boardDim,&extra) != 2 || extra != '\n'){ // scan and check 
         while (getchar()!='\n');
 }
  switch(boardDim){
- case 1: {
+ case 1:
+     clearScreen();
      Size=3; // choosing the size of board if it is 2*2 then the arrays will be [3][3]
-     Human_vs_Human(board1_horiz,board1_vert,s1,Size);}
+     printf("1- Human vs Human\n");
+     printf("2- Human vs AI\n");
+     printf("Enter 1 or 2: ");
+     scanf("%d",&input);
+     while(input != 1 && input != 2){
+        printf("Enter 1 or 2: ");
+        scanf("%d",&input);
+     }
+     if(input == 1){
+        Human_vs_Human(board1_horiz,board1_vert,s1,Size);
+     }else if(input == 2){
+         Human_vs_AI();
+     }
     break;
- case 2: {
+ case 2:
+     clearScreen();
      Size=6;  // choosing the size of board if it is 2*2 then the arrays will be [6][6]
-     Human_vs_Human(board2_horiz,board2_vert,s2,Size);}
+     printf("1- Human vs Human\n");
+     printf("2- Human vs AI\n");
+     printf("Enter 1 or 2: ");
+     scanf("%d",&input);
+     while(input != 1 && input != 2){
+        printf("Enter 1 or 2: ");
+        scanf("%d",&input);
+     }
+     if(input == 1){
+        Human_vs_Human(board2_horiz,board2_vert,s1,Size);
+     }else if(input == 2){
+         Human_vs_AI();
+     }
     break;
- default: {printf("Enter 1 or 2\n");
-    Determine_Dim(boardDim);}
+ case 3:
+     clearScreen();
+     Game_main_menu();
+    break;
+ default:
+     printf("Enter 1 or 2 or 3: ");
+     Determine_Dim(boardDim);
  }
 }
-void Hello_to_Game (){ // hello friend :)
- printf("Dots and Boxes\n\nChoose the game Dimension!\n");
- printf("2*2  (beginner)   Enter [1]\n");
- printf("5*5  (expert)     Enter [2]\n");
+void Game_main_menu (){ // hello friend :)
+    printf("1- New game\n");
+    printf("2- Load game\n");
+    printf("3- Rank\n");
+    printf("choose from 1 to 3: ");
+    scanf("%d",&input);
+    while (input != 1 && input != 2 && input != 3){
+        printf("invalid number\n");
+        printf("choose from 1 to 3: ");
+        scanf("%d",&input);
+    }
+    switch (input){
+        case(1):
+            clearScreen();
+            new_game();
+            break;
+        case(2):
+            clearScreen();
+            printf("coming soon");
+            // load_game;
+            break;
+        case(3):
+            clearScreen();
+            printf("coming soon");
+            // rank;
+            break;
+
+    }
 }
 void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int Size){ //printing the board after each move
  int row=0,column=0;
@@ -231,4 +286,13 @@ void End_Game (int Size,int* p1,int* p2){ // func to check if the game has ended
 }
 void clearScreen() {
     printf("\033[2J\033[1;1H"); // clear screen
+}
+void new_game(){
+    printf("Choose the game Dimensions!\n");
+    printf("1- beginner  (2x2)\n");
+    printf("2- expert    (5x5)\n");
+    printf("3- return to the main menu\n");
+    printf("choose from 1 to 3: ");
+}
+void Human_vs_AI(){
 }

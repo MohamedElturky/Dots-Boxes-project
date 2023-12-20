@@ -10,7 +10,7 @@ int board2_vert [6][6];
 int s1[3][3];
 int s2[6][6];
 int r1,r2,c1,c2;
-int Size;
+int Size, input;
 char extra;
 FILE *savedGame;
 
@@ -20,7 +20,7 @@ int main()
 
 
 
-Hello_to_Game ();
+Game_main_menu ();
 Determine_Dim (boardDim);
 
     return 0;
