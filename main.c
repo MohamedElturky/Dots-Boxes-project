@@ -13,6 +13,8 @@ int r1,r2,c1,c2;
 int Size, input;
 char extra;
 char name[50];
+char ranking[15];
+const char *filename = "ranking.csv";
 FILE *savedGame;
 
 int main()

@@ -107,13 +107,41 @@ void Game_main_menu (){ // hello friend :)
             clearScreen();
             printf("coming soon");
             // load_game;
+            printf("\n1- Return to main menu\n");
+            printf("2- Exit\n");
+            printf("Choose 1 or 2: ");
+            scanf("%d",&input);
+            while (input != 1 && input != 2){
+            printf("invalid number\n");
+            printf("choose from 1 or 2: ");
+            scanf("%d",&input);
+            }
+            if(input == 1){
+                 clearScreen();
+                 Game_main_menu();
+            }else{
+                 exit(0);
             break;
         case(3):
             clearScreen();
-            printf("coming soon");
-            // rank;
-            break;
-
+            print_rank(filename);
+            printf("\n1- Return to main menu\n");
+            printf("2- Exit\n");
+            printf("Choose 1 or 2: ");
+            scanf("%d",&input);
+            while (input != 1 && input != 2){
+            printf("invalid number\n");
+            printf("choose from 1 or 2: ");
+            scanf("%d",&input);
+            }
+            if(input == 1){
+                 clearScreen();
+                 Game_main_menu();
+            }else{
+                 exit(0);
+            }
+             break;
+       }
     }
 }
 void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int Size){ //printing the board after each move
@@ -285,6 +313,7 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
         printf("\t\t\t\t\t Player 1 is the winner!\n");// no need for explanation
         printf("Enter player 1's name:");
         scanf("%s",&name);
+        add_to_rank(filename,name,*p1);
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");
@@ -304,6 +333,7 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
         printf("\t\t\t\t\t Player 2 is the winner!\n");
         printf("Enter player 2's name:");
         scanf("%s",&name);
+        add_to_rank(filename,name,*p2);
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");
@@ -354,11 +384,45 @@ void new_game(){
 void Human_vs_AI(){
 }
 void Game_logo (){
-    printf(" ___           _             _____       ___                             \n");
-    printf("(  _`\\        ( )_          (  _  )     (  _`\\                           \n");
-    printf("| | ) |   _   | ,_)  ___    `\\  ,/'     | (_) )   _            __    ___ \n");
-    printf("| | | ) /'_`\\ | |  /',__)    /'_`\\/\\    |  _ <' /'_`\\ (`\\/') /'__`\\/',__)\n");
-    printf("| |_) |( (_) )| |_ \\__, \\   | (_> ,<`   | (_) )( (_) ) >  < (  ___/\\__, \\\n");
-    printf("(____/'`\\___/'`\\__)(____/   `\\___/\\/'   (____/'`\\___/'(_/\\_)`\\____)(____/\n");
-    printf("                                                         by Mohamed & Ali\n");
+    printf("                         ___           _             _____       ___                             \n");
+    printf("                        (  _`\\        ( )_          (  _  )     (  _`\\                           \n");
+    printf("                        | | ) |   _   | ,_)  ___    `\\  ,/'     | (_) )   _            __    ___ \n");
+    printf("                        | | | ) /'_`\\ | |  /',__)    /'_`\\/\\    |  _ <' /'_`\\ (`\\/') /'__`\\/',__)\n");
+    printf("                        | |_) |( (_) )| |_ \\__, \\   | (_> ,<`   | (_) )( (_) ) >  < (  ___/\\__, \\\n");
+    printf("                        (____/'`\\___/'`\\__)(____/   `\\___/\\/'   (____/'`\\___/'(_/\\_)`\\____)(____/\n");
+    printf("                                                                                    by Mohamed & Ali\n");
+}
+void create_rank_file(const char *filename){
+    FILE *file1 = fopen(filename, "w");
+    if (file1 == NULL) {
+        printf("Error: can't find file");
+        exit(1);
+    }
+    fprintf(file1, "Rank,Name,Score\n");
+    fclose(file1);
+}
+void print_rank(const char *filename){
+    FILE *file = fopen(filename, "r");
+    if (file == NULL){
+        create_rank_file(filename);
+        file = fopen(filename, "r");
+    }
+    while(fgets(ranking,sizeof(ranking),file) != NULL){
+        printf("%s",ranking);
+    }
+    fclose(file);
+}
+void add_to_rank(const char *filename, char *name,int *p){
+    FILE *file = fopen(filename, "a");
+    if (file == NULL){
+        create_rank_file(filename);
+        file = fopen(filename, "a");
+    }
+    int rank = 1;
+    rewind(file);
+    while (fgets(ranking, sizeof(ranking), file) != NULL){
+        rank++;
+    }
+    fprintf(file,"%d,%s,%d\n",rank,name,p);
+    fclose(file);
 }
