@@ -12,6 +12,7 @@ int s2[6][6];
 int r1,r2,c1,c2;
 int Size, input;
 char extra;
+char name[50];
 FILE *savedGame;
 
 int main()

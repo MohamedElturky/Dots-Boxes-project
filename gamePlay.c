@@ -43,6 +43,7 @@ while(scanf("%1d%c",&boardDim,&extra) != 2 || extra != '\n'){ // scan and check 
  case 1:
      clearScreen();
      Size=3; // choosing the size of board if it is 2*2 then the arrays will be [3][3]
+     Game_logo ();
      printf("1- Human vs Human\n");
      printf("2- Human vs AI\n");
      printf("Enter 1 or 2: ");
@@ -60,6 +61,7 @@ while(scanf("%1d%c",&boardDim,&extra) != 2 || extra != '\n'){ // scan and check 
  case 2:
      clearScreen();
      Size=6;  // choosing the size of board if it is 2*2 then the arrays will be [6][6]
+     Game_logo ();
      printf("1- Human vs Human\n");
      printf("2- Human vs AI\n");
      printf("Enter 1 or 2: ");
@@ -84,6 +86,7 @@ while(scanf("%1d%c",&boardDim,&extra) != 2 || extra != '\n'){ // scan and check 
  }
 }
 void Game_main_menu (){ // hello friend :)
+    Game_logo ();
     printf("1- New game\n");
     printf("2- Load game\n");
     printf("3- Rank\n");
@@ -277,11 +280,63 @@ void print_scores (int Size,int score1, int score2,int move1, int move2){ //just
    if (Size==6) printf("\t\t\t\t\t %d dots remaining\n",60-(move1+move2));
 }
 void End_Game (int Size,int* p1,int* p2){ // func to check if the game has ended
-        if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if the  sum of scores = equal the number of boxes and i think this approach is easier than looping
-
-    if (*p1 > *p2) printf("\t\t\t\t\t Player 1 is the winner!\n"); // no need for explanation
-    else if (*p2 > *p1) printf("\t\t\t\t\t Player 2 is the winner!\n");
-    else printf("\t\t\t\t\t Tie!");
+if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if the  sum of scores = equal the number of boxes and i think this approach is easier than looping
+    if (*p1 > *p2){
+        printf("\t\t\t\t\t Player 1 is the winner!\n");// no need for explanation
+        printf("Enter player 1's name:");
+        scanf("%s",&name);
+        printf("1-Return to the main menu\n");
+        printf("2-Exit\n");
+        printf("Choose 1 or 2: ");
+        scanf("%d",&input);
+        while (input != 1 && input != 2){
+        printf("invalid number\n");
+        printf("choose from 1 or 2: ");
+        scanf("%d",&input);
+    }
+        if(input == 1){
+            clearScreen();
+            Game_main_menu();
+        }else{
+            exit(0);
+        }
+    }else if(*p2 > *p1){
+        printf("\t\t\t\t\t Player 2 is the winner!\n");
+        printf("Enter player 2's name:");
+        scanf("%s",&name);
+        printf("1-Return to the main menu\n");
+        printf("2-Exit\n");
+        printf("Choose 1 or 2: ");
+        scanf("%d",&input);
+        while (input != 1 && input != 2){
+        printf("invalid number\n");
+        printf("choose from 1 or 2: ");
+        scanf("%d",&input);
+    }
+        if(input == 1){
+            clearScreen();
+            Game_main_menu();
+        }else{
+            exit(0);
+        }
+    }else{
+        printf("\t\t\t\t\t Tie!");
+        printf("1-Return to the main menu\n");
+        printf("2-Exit\n");
+        printf("Choose 1 or 2: ");
+        scanf("%d",&input);
+        while (input != 1 && input != 2){
+        printf("invalid number\n");
+        printf("choose from 1 or 2: ");
+        scanf("%d",&input);
+    }
+        if(input == 1){
+            clearScreen();
+            Game_main_menu();
+        }else{
+            exit(0);
+        }
+    }
     exit(0); // function to terminate the recursion
     }
 }
@@ -289,6 +344,7 @@ void clearScreen() {
     printf("\033[2J\033[1;1H"); // clear screen
 }
 void new_game(){
+    Game_logo ();
     printf("Choose the game Dimensions!\n");
     printf("1- beginner  (2x2)\n");
     printf("2- expert    (5x5)\n");
@@ -296,4 +352,13 @@ void new_game(){
     printf("choose from 1 to 3: ");
 }
 void Human_vs_AI(){
+}
+void Game_logo (){
+    printf(" ___           _             _____       ___                             \n");
+    printf("(  _`\\        ( )_          (  _  )     (  _`\\                           \n");
+    printf("| | ) |   _   | ,_)  ___    `\\  ,/'     | (_) )   _            __    ___ \n");
+    printf("| | | ) /'_`\\ | |  /',__)    /'_`\\/\\    |  _ <' /'_`\\ (`\\/') /'__`\\/',__)\n");
+    printf("| |_) |( (_) )| |_ \\__, \\   | (_> ,<`   | (_) )( (_) ) >  < (  ___/\\__, \\\n");
+    printf("(____/'`\\___/'`\\__)(____/   `\\___/\\/'   (____/'`\\___/'(_/\\_)`\\____)(____/\n");
+    printf("                                                         by Mohamed & Ali\n");
 }

@@ -10,6 +10,7 @@ extern int s2[6][6];
 extern int r1,r2,c1,c2;
 extern int Size,input;
 extern char extra;
+extern char name[50];
 extern FILE *savedGame;
 typedef struct player {
  char name[100];
@@ -25,4 +26,5 @@ void player2_turn();
 void Human_vs_Human();
 void Game_score();
 void save();
+void Game_logo();
 #endif // FUNCTIONS_H_INCLUDED
