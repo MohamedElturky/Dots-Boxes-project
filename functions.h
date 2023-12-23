@@ -10,8 +10,11 @@ extern int s2[6][6];
 extern int r1,r2,c1,c2;
 extern int Size,input;
 extern char extra;
+extern char name[50];
+extern char ranking[11];
+extern const char *filename;
 extern FILE *savedGame;
-typedef struct player {
+typedef struct{
  char name[100];
  int score;
  int numOfMoves;
@@ -21,6 +24,16 @@ void Determine_Dim ();
 void Game_main_menu ();
 void print_board();
 void Human_vs_Human();
+void player1_turn();
+void player2_turn();
 
+
+
+void Game_score();
+void save();
+void Game_logo();
+void create_rank_file(const char *filename);
+void print_rank(const char *filename);
+void add_to_rank(const char *filename, char *name,int *p);
 
 #endif // FUNCTIONS_H_INCLUDED
