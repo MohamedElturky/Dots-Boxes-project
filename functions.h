@@ -20,9 +20,7 @@ void initilaize_Board();
 void Determine_Dim ();
 void Game_main_menu ();
 void print_board();
-void player1_turn();
-void player2_turn();
 void Human_vs_Human();
-void Game_score();
-void save();
+
+
 #endif // FUNCTIONS_H_INCLUDED

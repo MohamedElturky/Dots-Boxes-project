@@ -54,7 +54,7 @@ while(scanf("%1d%c",&boardDim,&extra) != 2 || extra != '\n'){ // scan and check 
      if(input == 1){
         Human_vs_Human(board1_horiz,board1_vert,s1,Size);
      }else if(input == 2){
-         Human_vs_AI();
+         Human_vs_Comp(board1_horiz,board1_vert,s1,Size);
      }
     break;
  case 2:
@@ -69,9 +69,9 @@ while(scanf("%1d%c",&boardDim,&extra) != 2 || extra != '\n'){ // scan and check 
         scanf("%d",&input);
      }
      if(input == 1){
-        Human_vs_Human(board2_horiz,board2_vert,s1,Size);
+        Human_vs_Human(board2_horiz,board2_vert,s2,Size);
      }else if(input == 2){
-         Human_vs_AI();
+         Human_vs_Comp(board2_horiz,board2_vert,s2,Size);
      }
     break;
  case 3:
@@ -166,7 +166,7 @@ void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
         printf("\x1B[34m""Player 1 turn Enter (RRCC): ""\x1B[0m");
         while (getchar()!='\n');
 }
-  if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]==' '){ // here are the conditions for input if the input is horizontal  note: here i used the absolute function to neglect the order of input like 2212 and 2221
+  if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]==' ' && (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)){ // here are the conditions for input if the input is horizontal  note: here i used the absolute function to neglect the order of input like 2212 and 2221
     board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]=1; // assignment of move  note again: the ternary operator is used as caution of the input order
     Game_score(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2);// calculating the score
     clearScreen();
@@ -175,7 +175,7 @@ void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
     print_scores(Size,*p1,*p2,*n1,*n2); // print the scores
     player2_turn(board_horiz,board_vert,s,p1,p2,n1,n2); // it is time for the another player move
   }
-   else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]==' ') { // here are the conditions for input if the input is vertical
+   else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]==' ' && (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)) { // here are the conditions for input if the input is vertical
     board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]=1;
     Game_score(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2);
     clearScreen();
@@ -192,11 +192,11 @@ void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
   printf("\x1B[31m""Player 2 turn Enter (RRCC) ""\x1B[0m");
    while(scanf("%1d%1d%1d%1d%c",&r1,&r2,&c1,&c2,&extra) != 5 || extra != '\n'){ // scan and check if the input is not digits
         printf("\x1B[31m""Enter a correct place\n""\x1B[0m");
-        printf("\x1B[31m""Player 1 turn Enter (RRCC): ""\x1B[0m");
+        printf("\x1B[31m""Player 2 turn Enter (RRCC): ""\x1B[0m");
         while (getchar()!='\n');
 }
 
-  if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]==' '){
+  if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]==' '&& (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)){
     board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]=2;
     Game_score(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2);
     clearScreen();
@@ -205,7 +205,7 @@ void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
     print_scores(Size,*p1,*p2,*n1,*n2);
     player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
   }
-   else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]==' ') {
+   else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]==' '&& (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)) {
     board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]=2;
     Game_score(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2);
     clearScreen();
@@ -295,5 +295,4 @@ void new_game(){
     printf("3- return to the main menu\n");
     printf("choose from 1 to 3: ");
 }
-void Human_vs_AI(){
-}
+
