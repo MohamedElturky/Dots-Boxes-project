@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <time.h>
 #include "functions.h"
@@ -311,8 +312,22 @@ void End_Game (int Size,int* p1,int* p2){ // func to check if the game has ended
 if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if the  sum of scores = equal the number of boxes and i think this approach is easier than looping
     if (*p1 > *p2){
         printf("\t\t\t\t\t Player 1 is the winner!\n");// no need for explanation
-        printf("Enter player 1's name:");
-        scanf("%s",&name);
+        while(1){
+        printf("Enter player 1's name (49 characters MAX): ");
+        scanf("%49s", name);
+        int containsComma = 0;
+        for(int i=0;i<strlen(name);i++){
+            if (name[i] == ','){
+                containsComma = 1;
+                break;
+            }
+        }
+        if (containsComma){
+            printf("Name cannot contain ','.\n");
+        }else{
+            break;
+         }
+        }
         add_to_rank(filename,name,*p1);
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
@@ -322,7 +337,7 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
         printf("invalid number\n");
         printf("choose from 1 or 2: ");
         scanf("%d",&input);
-    }
+        }
         if(input == 1){
             clearScreen();
             Game_main_menu();
@@ -331,8 +346,22 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
         }
     }else if(*p2 > *p1){
         printf("\t\t\t\t\t Player 2 is the winner!\n");
-        printf("Enter player 2's name:");
-        scanf("%s",&name);
+        while(1){
+        printf("Enter player 2's name (49 characters MAX): ");
+        scanf("%49s", name);
+        int containsComma = 0;
+        for(int i=0;i<strlen(name);i++){
+            if (name[i] == ','){
+                containsComma = 1;
+                break;
+            }
+        }
+        if (containsComma){
+            printf("Name cannot contain ','.\n");
+        }else{
+            break;
+         }
+        }
         add_to_rank(filename,name,*p2);
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
@@ -350,11 +379,45 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
             exit(0);
         }
     }else{
-        printf("\t\t\t\t\t Tie!");
+        printf("\t\t\t\t\t Tie!\n");
+        while(1){
+        printf("Enter player 1's name (49 characters MAX): ");
+        scanf("%49s", name);
+        int containsComma = 0;
+        for(int i=0;i<strlen(name);i++){
+            if (name[i] == ','){
+                containsComma = 1;
+                break;
+            }
+        }
+        if (containsComma){
+            printf("Name cannot contain ','.\n");
+        }else{
+            break;
+         }
+        }
+        add_to_rank(filename,name,*p1);
+        while(1){
+        printf("Enter player 2's name (49 characters MAX): ");
+        scanf("%49s", name);
+        int containsComma = 0;
+        for(int i=0;i<strlen(name);i++){
+            if (name[i] == ','){
+                containsComma = 1;
+                break;
+            }
+        }
+        if (containsComma){
+            printf("Name cannot contain ','.\n");
+        }else{
+            break;
+         }
+        }
+        add_to_rank(filename,name,*p2);
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");
-        scanf("%d",&input);
+        scanf("%[^,]",&input);
         while (input != 1 && input != 2){
         printf("invalid number\n");
         printf("choose from 1 or 2: ");
@@ -392,37 +455,4 @@ void Game_logo (){
     printf("                        (____/'`\\___/'`\\__)(____/   `\\___/\\/'   (____/'`\\___/'(_/\\_)`\\____)(____/\n");
     printf("                                                                                    by Mohamed & Ali\n");
 }
-void create_rank_file(const char *filename){
-    FILE *file1 = fopen(filename, "w");
-    if (file1 == NULL) {
-        printf("Error: can't find file");
-        exit(1);
-    }
-    fprintf(file1, "Rank,Name,Score\n");
-    fclose(file1);
-}
-void print_rank(const char *filename){
-    FILE *file = fopen(filename, "r");
-    if (file == NULL){
-        create_rank_file(filename);
-        file = fopen(filename, "r");
-    }
-    while(fgets(ranking,sizeof(ranking),file) != NULL){
-        printf("%s",ranking);
-    }
-    fclose(file);
-}
-void add_to_rank(const char *filename, char *name,int *p){
-    FILE *file = fopen(filename, "a");
-    if (file == NULL){
-        create_rank_file(filename);
-        file = fopen(filename, "a");
-    }
-    int rank = 1;
-    rewind(file);
-    while (fgets(ranking, sizeof(ranking), file) != NULL){
-        rank++;
-    }
-    fprintf(file,"%d,%s,%d\n",rank,name,p);
-    fclose(file);
-}
+

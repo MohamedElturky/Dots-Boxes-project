@@ -11,10 +11,10 @@ extern int r1,r2,c1,c2;
 extern int Size,input;
 extern char extra;
 extern char name[50];
-extern char ranking[15];
+extern char ranking[11];
 extern const char *filename;
 extern FILE *savedGame;
-typedef struct player {
+typedef struct{
  char name[100];
  int score;
  int numOfMoves;
