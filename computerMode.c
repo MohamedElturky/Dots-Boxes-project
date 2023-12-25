@@ -5,8 +5,8 @@
 #include "functions.h"
 clock_t startTime;
 int Horiz_or_Vert;
-int lower,higher;
-int i =10000;
+
+
 void Human_vs_Comp(int board_horiz [Size][Size],int board_vert [Size][Size],int s[Size][Size],int Size){
    player player1;
    player comp;
@@ -57,7 +57,7 @@ void Comp_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size
      End_Game(Size,p1,p2);
 
     if (completing_square(board_horiz,board_vert,Size))
-     random_move(board_horiz,board_vert,Size);
+        random_move(board_horiz,board_vert,Size);
     Game1_score(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2);
     clearScreen();
     print_board(board_horiz,board_vert,s,Size);
