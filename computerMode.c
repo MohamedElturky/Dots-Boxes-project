@@ -25,7 +25,7 @@ void Human_vs_Comp(int board_horiz [Size][Size],int board_vert [Size][Size],int 
    player_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
 }
 void player_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ //player 1 turn func with parameters 1-the horizontal array 2-the vertical array 3-pointer to player 1 score 4-pointer to player 2 score
-  End_Game(Size,p1,p2); // check if the game has ended
+  End_Game(Size,p1,p2,2); // check if the game has ended
   printf("\x1B[34m""Player 1 turn Enter (RRCC) ""\x1B[0m");
   while(scanf("%1d%1d%1d%1d%c",&r1,&r2,&c1,&c2,&extra) != 5 || extra != '\n'){ // scan and check if the input is not digits
         printf("\x1B[34m""Enter a correct place\n""\x1B[0m");
@@ -54,7 +54,7 @@ void player_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
    player_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
 void Comp_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ // same as player 1 func
-     End_Game(Size,p1,p2);
+     End_Game(Size,p1,p2,2);
 
     if (completing_square(board_horiz,board_vert,Size))
      random_move(board_horiz,board_vert,Size);

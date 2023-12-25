@@ -191,7 +191,7 @@ void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 
 }
 void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ //player 1 turn func with parameters 1-the horizontal array 2-the vertical array 3-pointer to player 1 score 4-pointer to player 2 score
-  End_Game(Size,p1,p2); // check if the game has ended
+  End_Game(Size,p1,p2,1); // check if the game has ended
   printf("\x1B[34m""Player 1 turn Enter (RRCC) ""\x1B[0m");
   while(scanf("%1d%1d%1d%1d%c",&r1,&r2,&c1,&c2,&extra) != 5 || extra != '\n'){ // scan and check if the input is not digits
         printf("\x1B[34m""Enter a correct place\n""\x1B[0m");
@@ -220,7 +220,7 @@ void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
    player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
 void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ // same as player 1 func
-  End_Game(Size,p1,p2);
+  End_Game(Size,p1,p2,1);
   printf("\x1B[31m""Player 2 turn Enter (RRCC) ""\x1B[0m");
    while(scanf("%1d%1d%1d%1d%c",&r1,&r2,&c1,&c2,&extra) != 5 || extra != '\n'){ // scan and check if the input is not digits
         printf("\x1B[31m""Enter a correct place\n""\x1B[0m");
@@ -308,7 +308,7 @@ void print_scores (int Size,int score1, int score2,int move1, int move2){ //just
    if (Size==3) printf("\t\t\t\t\t %d dots remaining\n",12-(move1+move2));
    if (Size==6) printf("\t\t\t\t\t %d dots remaining\n",60-(move1+move2));
 }
-void End_Game (int Size,int* p1,int* p2){ // func to check if the game has ended
+void End_Game (int Size,int* p1,int* p2,int mode){ // func to check if the game has ended
 if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if the  sum of scores = equal the number of boxes and i think this approach is easier than looping
     if (*p1 > *p2){
         printf("\t\t\t\t\t Player 1 is the winner!\n");// no need for explanation
@@ -344,7 +344,7 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
         }else{
             exit(0);
         }
-    }else if(*p2 > *p1){
+    }else if(*p2 > *p1 && mode == 1){
         printf("\t\t\t\t\t Player 2 is the winner!\n");
         while(1){
         printf("Enter player 2's name (49 characters MAX): ");
@@ -363,6 +363,57 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
          }
         }
         add_to_rank(filename,name,*p2);
+        printf("1-Return to the main menu\n");
+        printf("2-Exit\n");
+        printf("Choose 1 or 2: ");
+        scanf("%d",&input);
+        while (input != 1 && input != 2){
+        printf("invalid number\n");
+        printf("choose from 1 or 2: ");
+        scanf("%d",&input);
+    }
+        if(input == 1){
+            clearScreen();
+            Game_main_menu();
+        }else{
+            exit(0);
+        }
+    }else if(*p2 > *p1 && mode == 2){
+        printf("the computer is the winner!\n");
+        printf("1-Return to the main menu\n");
+        printf("2-Exit\n");
+        printf("Choose 1 or 2: ");
+        scanf("%d",&input);
+        while (input != 1 && input != 2){
+        printf("invalid number\n");
+        printf("choose from 1 or 2: ");
+        scanf("%d",&input);
+    }
+        if(input == 1){
+            clearScreen();
+            Game_main_menu();
+        }else{
+            exit(0);
+        }
+    }else if(*p1 == *p2 && mode == 2){
+        printf("\t\t\t\t\t Tie!\n");
+        while(1){
+        printf("Enter player 1's name (49 characters MAX): ");
+        scanf("%49s", name);
+        int containsComma = 0;
+        for(int i=0;i<strlen(name);i++){
+            if (name[i] == ','){
+                containsComma = 1;
+                break;
+            }
+        }
+        if (containsComma){
+            printf("Name cannot contain ','.\n");
+        }else{
+            break;
+         }
+        }
+        add_to_rank(filename,name,*p1);
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");
@@ -417,7 +468,7 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");
-        scanf("%[^,]",&input);
+        scanf("%d",&input);
         while (input != 1 && input != 2){
         printf("invalid number\n");
         printf("choose from 1 or 2: ");
