@@ -11,14 +11,14 @@ void initilaize_Board(int board_horiz [Size][Size],int board_vert [Size][Size]){
       int row=0,column=0;
 
       printf("\t\t\t\t\t\t   ");
-   for (column=0 ; column<Size ; column++) printf("%d   ",column+1);
+   for (column=0 ; column<Size ; column++) printf("%d    ",column+1);
       printf("\n\n");
     for(row=0 ; row<Size ;row++){
             printf("\t\t\t\t\t\t");
         printf("%d  ",row+1);
     for (column=0 ; column<Size ; column++){
         board_horiz[row][column]=' '; // initializing an array for horizontal dashes -
-        printf("*%c%c%c",board_horiz[row][column],board_horiz[row][column],board_horiz[row][column]);
+        printf("*%c%c%c%c",board_horiz[row][column],board_horiz[row][column],board_horiz[row][column],board_horiz[row][column]);
     }
         printf("\n");
     printf("\t\t\t\t\t\t");
@@ -150,16 +150,16 @@ void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 
 
       printf("\t\t\t\t\t\t   ");
-   for (column=0 ; column<Size ; column++) printf("%d   ",column+1);
+   for (column=0 ; column<Size ; column++) printf("%d    ",column+1);
       printf("\n\n");
    for(row=0 ; row<Size ;row++){
         printf("\t\t\t\t\t\t");
        printf("%d  ",row+1);
        for (column=0 ; column<Size ; column++){
         if(board_horiz[row][column]==1)
-        printf("*\033[0;34m---\033[0m");//printing --- for horizontal dots
-        else if (board_horiz[row][column]==2) printf("*\033[0;31m---\033[0m");
-        else printf("*   ");
+        printf("*\033[0;34m----\033[0m");//printing ---- for horizontal dots
+        else if (board_horiz[row][column]==2) printf("*\033[0;31m----\033[0m");
+        else printf("*    ");
        }
        printf("\n");
 
@@ -168,22 +168,22 @@ void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 
        if(board_vert[row][column]==1){//printing | for vertical dots and if a box is completed prints #
             if(s[row][column]==1)
-        printf("\033[0;34m|\033[0m \033[0;34m1\033[0m ");
+        printf("\033[0;34m|\033[0m \x1b[44m  \033[0m ");
         else if(s[row][column]==2)
-        printf("\033[0;34m|\033[0m \033[0;31m2\033[0m ");
+        printf("\033[0;34m|\033[0m \x1b[41m  \033[0m ");
          else
-        printf("\033[0;34m|\033[0m   ");
+        printf("\033[0;34m|\033[0m    ");
 
        }
         else if(board_vert[row][column]==2) {
            if(s[row][column]==1)
-        printf("\033[0;31m|\033[0m \033[0;34m1\033[0m ");
+        printf("\033[0;31m|\033[0m \x1b[44m  \033[0m ");
         else if(s[row][column]==2)
-        printf("\033[0;31m|\033[0m \033[0;31m2\033[0m ");
+        printf("\033[0;31m|\033[0m \x1b[41m  \033[0m ");
          else
-        printf("\033[0;31m|\033[0m   ");
+        printf("\033[0;31m|\033[0m    ");
         }
-        else printf("    ");
+        else printf("     ");
        }
 
        printf("\n");
