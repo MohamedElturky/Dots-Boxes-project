@@ -15,6 +15,7 @@ extern int Size,input;
 extern char extra;
 extern char name[50];
 extern char ranking[11];
+extern int undo[16];
 extern const char *filename;
 extern FILE *savedGame;
 typedef struct{

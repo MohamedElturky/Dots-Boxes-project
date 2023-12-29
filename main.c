@@ -16,6 +16,7 @@ int Size, input;
 char extra;
 char name[50];
 char ranking[11];
+int undo[16];
 const char *filename = "ranking.csv";
 FILE *savedGame;
 
