@@ -7,7 +7,10 @@ extern int board2_horiz[6][6];
 extern int board2_vert[6][6];
 extern int s1[3][3];
 extern int s2[6][6];
-extern int r1,r2,c1,c2;
+extern int redo_log1[12][4];
+extern int redo_log2[60][4];
+
+extern int r1,r2,c1,c2,c,undoM,redoM;
 extern int Size,input;
 extern char extra;
 extern char name[50];
@@ -26,9 +29,12 @@ void print_board();
 void Human_vs_Human();
 void player1_turn();
 void player2_turn();
-
-
-
+void ifGetScore();
+void initialize_Redo_Log();
+void saveRedoLog();
+void undo();
+void redo();
+void delete_next_redo ();
 void Game_score();
 void save();
 void Game_logo();

@@ -7,18 +7,19 @@
 clock_t startTime; //global var for time
 int s1[3][3];// array for score boxes
 int s2[6][6];
+int DimRow,DimCol,orient;
 void initilaize_Board(int board_horiz [Size][Size],int board_vert [Size][Size]){ //initializing the board
       int row=0,column=0;
 
       printf("\t\t\t\t\t\t   ");
-   for (column=0 ; column<Size ; column++) printf("%d   ",column+1);
+   for (column=0 ; column<Size ; column++) printf("%d    ",column+1);
       printf("\n\n");
     for(row=0 ; row<Size ;row++){
             printf("\t\t\t\t\t\t");
         printf("%d  ",row+1);
     for (column=0 ; column<Size ; column++){
         board_horiz[row][column]=' '; // initializing an array for horizontal dashes -
-        printf("*%c%c%c",board_horiz[row][column],board_horiz[row][column],board_horiz[row][column]);
+        printf("*%c%c%c%c",board_horiz[row][column],board_horiz[row][column],board_horiz[row][column],board_horiz[row][column]);
     }
         printf("\n");
     printf("\t\t\t\t\t\t");
@@ -32,7 +33,8 @@ void initilaize_Board(int board_horiz [Size][Size],int board_vert [Size][Size]){
     for (int column=0 ; column<Size ; column++){
             s1[row][column]=0;
             s2[row][column]=0;
-   }
+
+    }
    }
 }
 void Determine_Dim (int boardDim){
@@ -150,16 +152,16 @@ void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 
 
       printf("\t\t\t\t\t\t   ");
-   for (column=0 ; column<Size ; column++) printf("%d   ",column+1);
+   for (column=0 ; column<Size ; column++) printf("%d    ",column+1);
       printf("\n\n");
    for(row=0 ; row<Size ;row++){
         printf("\t\t\t\t\t\t");
        printf("%d  ",row+1);
        for (column=0 ; column<Size ; column++){
         if(board_horiz[row][column]==1)
-        printf("*\033[0;34m---\033[0m");//printing --- for horizontal dots
-        else if (board_horiz[row][column]==2) printf("*\033[0;31m---\033[0m");
-        else printf("*   ");
+        printf("*\033[0;34m----\033[0m");//printing ---- for horizontal dots
+        else if (board_horiz[row][column]==2) printf("*\033[0;31m----\033[0m");
+        else printf("*    ");
        }
        printf("\n");
 
@@ -168,22 +170,22 @@ void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 
        if(board_vert[row][column]==1){//printing | for vertical dots and if a box is completed prints #
             if(s[row][column]==1)
-        printf("\033[0;34m|\033[0m \033[0;34m1\033[0m ");
+        printf("\033[0;34m|\033[0m \x1b[44m  \033[0m ");
         else if(s[row][column]==2)
-        printf("\033[0;34m|\033[0m \033[0;31m2\033[0m ");
+        printf("\033[0;34m|\033[0m \x1b[41m  \033[0m ");
          else
-        printf("\033[0;34m|\033[0m   ");
+        printf("\033[0;34m|\033[0m    ");
 
        }
         else if(board_vert[row][column]==2) {
            if(s[row][column]==1)
-        printf("\033[0;31m|\033[0m \033[0;34m1\033[0m ");
+        printf("\033[0;31m|\033[0m \x1b[44m  \033[0m ");
         else if(s[row][column]==2)
-        printf("\033[0;31m|\033[0m \033[0;31m2\033[0m ");
+        printf("\033[0;31m|\033[0m \x1b[41m  \033[0m ");
          else
-        printf("\033[0;31m|\033[0m   ");
+        printf("\033[0;31m|\033[0m    ");
         }
-        else printf("    ");
+        else printf("     ");
        }
 
        printf("\n");
@@ -191,7 +193,7 @@ void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 
 }
 void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ //player 1 turn func with parameters 1-the horizontal array 2-the vertical array 3-pointer to player 1 score 4-pointer to player 2 score
-  End_Game(Size,p1,p2); // check if the game has ended
+  End_Game(Size,p1,p2,1); // check if the game has ended
   printf("\x1B[34m""Player 1 turn Enter (RRCC) ""\x1B[0m");
   while(scanf("%1d%1d%1d%1d%c",&r1,&r2,&c1,&c2,&extra) != 5 || extra != '\n'){ // scan and check if the input is not digits
         printf("\x1B[34m""Enter a correct place\n""\x1B[0m");
@@ -200,27 +202,35 @@ void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
 }
   if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]==' ' && (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)){ // here are the conditions for input if the input is horizontal  note: here i used the absolute function to neglect the order of input like 2212 and 2221
     board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]=1; // assignment of move  note again: the ternary operator is used as caution of the input order
-    Game_score(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2);// calculating the score
+    DimRow=r1-1 ;DimCol=(c2>c1)?(c1-1):(c2-1) ; orient = 'h',undoM =0,redoM=0;
+    saveRedoLog(Size,DimRow,DimCol,orient,1,n1,n2);
+    delete_next_redo (Size,n1,n2);
+    Game_score(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2,DimRow,DimCol,orient);// calculating the score
     clearScreen();
     print_board(board_horiz,board_vert,s,Size); // print the board
-    (*n1)++;
     print_scores(Size,*p1,*p2,*n1,*n2); // print the scores
     player2_turn(board_horiz,board_vert,s,p1,p2,n1,n2); // it is time for the another player move
   }
    else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]==' ' && (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)) { // here are the conditions for input if the input is vertical
-    board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]=1;
-    Game_score(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2);
+    board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]=1  ;
+    DimRow=(r2>r1)?(r1-1):(r2-1) ;DimCol= c1-1 ;orient= 'v',undoM =0,redoM=0;
+    saveRedoLog(Size,DimRow,DimCol,orient,1,n1,n2);
+    delete_next_redo (Size,n1,n2);
+    Game_score(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2,DimRow,DimCol,orient);
     clearScreen();
     print_board(board_horiz,board_vert,s,Size);
-    (*n1)++;
     print_scores(Size,*p1,*p2,*n1,*n2);
     player2_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
    }
+     else if (r1==0 && r2 ==0 && c1==0 && c2==0)
+    undo(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2,DimRow,DimCol ,orient);
+     else if (r1==1 && r2 ==1 && c1==1 && c2==1)
+    redo(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2,DimRow,DimCol ,orient);
    else{printf("\x1B[34m""Enter a correct place\n""\x1B[0m"); // another try to enter the input if it was wrong
    player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
 void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ // same as player 1 func
-  End_Game(Size,p1,p2);
+  End_Game(Size,p1,p2,1);
   printf("\x1B[31m""Player 2 turn Enter (RRCC) ""\x1B[0m");
    while(scanf("%1d%1d%1d%1d%c",&r1,&r2,&c1,&c2,&extra) != 5 || extra != '\n'){ // scan and check if the input is not digits
         printf("\x1B[31m""Enter a correct place\n""\x1B[0m");
@@ -230,22 +240,30 @@ void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
 
   if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]==' '&& (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)){
     board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]=2;
-    Game_score(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2);
+    DimRow=r1-1 ;DimCol=(c2>c1)?(c1-1):(c2-1) ; orient = 'h',undoM =0,redoM=0;
+    saveRedoLog(Size,DimRow,DimCol,orient,2,n1,n2);
+    delete_next_redo (Size,n1,n2);
+    Game_score(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2,DimRow,DimCol,orient);
     clearScreen();
     print_board(board_horiz,board_vert,s,Size);
-    (*n2)++;
     print_scores(Size,*p1,*p2,*n1,*n2);
     player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
   }
    else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]==' '&& (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)) {
     board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]=2;
-    Game_score(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2);
+    DimRow=(r2>r1)?(r1-1):(r2-1) ;DimCol= c1-1 ;orient= 'v',undoM =0,redoM=0;
+    saveRedoLog(Size,DimRow,DimCol,orient,2,n1,n2);
+    delete_next_redo (Size,n1,n2);
+    Game_score(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2,DimRow,DimCol,orient);
     clearScreen();
     print_board(board_horiz,board_vert,s,Size);
-    (*n2)++;
     print_scores(Size,*p1,*p2,*n1,*n2);
     player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
    }
+   else if (r1==0 && r2 ==0 && c1==0 && c2==0)
+    undo(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2,DimRow,DimCol ,orient);
+    else if (r1==1 && r2 ==1 && c1==1 && c2==1)
+    redo(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2,DimRow,DimCol ,orient);
    else{printf("\x1B[31m""Enter a correct place\n""\x1B[0m");
    player2_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
@@ -263,11 +281,12 @@ void Human_vs_Human (int board_horiz [Size][Size],int board_vert [Size][Size],in
    int *p2=&player2.score;
    clearScreen();
    initilaize_Board(board_horiz,board_vert);
-
+   initialize_Redo_Log(Size);
    player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2); // here the first turn will be called
 }
-void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int Size,int* p1,int* p2,int Current_Player,int*n1,int*n2){ /* the most important function that calculates scores VIP ,
+void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int Size,int* p1,int* p2,int Current_Player,int*n1,int*n2,int DimRow,int DimCol ,int orient){ /* the most important function that calculates scores VIP ,
                                                             Note:the current_player parameter is to detect the current player that has made the last turn and it has previous value of either p1 or p2 depem*/
+    if (!undoM || redoM) ifGetScore(board_horiz,board_vert,Size,Current_Player,n1,n2,DimRow,DimCol,orient);
     int count_scores=0; //create var to store the sum scores for both players
     for (int row=0 ; row<Size-1 ;row++){
         for (int column=0 ; column<Size-1 ;column++){
@@ -278,14 +297,19 @@ void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
                 if(s[row][column]==0)//check if the score box is completed if not marks it with player number and later will change to player color
                 s[row][column]=Current_Player;
             }
+            else {
+
+                 if(s[row][column] != 0)
+                s[row][column]=0;
+            }
         }
     }
      if (count_scores> *(p1) + *(p2)){//the next step if the score is updated during the last turn the var count_scores will be greater than sum of both scores recorded
+
                     if(Current_Player == 1) {
                         *p1 += count_scores-(*p1 + *p2);
                         clearScreen();
                         print_board(board_horiz,board_vert,s,Size);
-                        (*n1)++;
                         print_scores(Size,*p1,*p2,*n1,*n2);
                         player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
                     }
@@ -293,9 +317,17 @@ void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
                         *p2 += count_scores-(*p1 + *p2);
                         clearScreen();
                         print_board(board_horiz,board_vert,s,Size);
-                        (*n2)++;
                         print_scores(Size,*p1,*p2,*n1,*n2);
                         player2_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
+                    }
+     }
+     else if (count_scores< *(p1) + *(p2)){//for undo
+                    if(Current_Player == 1) {
+                         *p1 -= (*p1 + *p2)-count_scores;
+                    }
+                    else {
+                        *p2 -= (*p1 + *p2)-count_scores;
+
                     }
      }
 }
@@ -308,7 +340,7 @@ void print_scores (int Size,int score1, int score2,int move1, int move2){ //just
    if (Size==3) printf("\t\t\t\t\t %d dots remaining\n",12-(move1+move2));
    if (Size==6) printf("\t\t\t\t\t %d dots remaining\n",60-(move1+move2));
 }
-void End_Game (int Size,int* p1,int* p2){ // func to check if the game has ended
+void End_Game (int Size,int* p1,int* p2,int mode){ // func to check if the game has ended
 if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if the  sum of scores = equal the number of boxes and i think this approach is easier than looping
     if (*p1 > *p2){
         printf("\t\t\t\t\t Player 1 is the winner!\n");// no need for explanation
@@ -344,7 +376,7 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
         }else{
             exit(0);
         }
-    }else if(*p2 > *p1){
+    }else if(*p2 > *p1 && mode == 1){
         printf("\t\t\t\t\t Player 2 is the winner!\n");
         while(1){
         printf("Enter player 2's name (49 characters MAX): ");
@@ -363,6 +395,57 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
          }
         }
         add_to_rank(filename,name,*p2);
+        printf("1-Return to the main menu\n");
+        printf("2-Exit\n");
+        printf("Choose 1 or 2: ");
+        scanf("%d",&input);
+        while (input != 1 && input != 2){
+        printf("invalid number\n");
+        printf("choose from 1 or 2: ");
+        scanf("%d",&input);
+    }
+        if(input == 1){
+            clearScreen();
+            Game_main_menu();
+        }else{
+            exit(0);
+        }
+    }else if(*p2 > *p1 && mode == 2){
+        printf("the computer is the winner!\n");
+        printf("1-Return to the main menu\n");
+        printf("2-Exit\n");
+        printf("Choose 1 or 2: ");
+        scanf("%d",&input);
+        while (input != 1 && input != 2){
+        printf("invalid number\n");
+        printf("choose from 1 or 2: ");
+        scanf("%d",&input);
+    }
+        if(input == 1){
+            clearScreen();
+            Game_main_menu();
+        }else{
+            exit(0);
+        }
+    }else if(*p1 == *p2 && mode == 2){
+        printf("\t\t\t\t\t Tie!\n");
+        while(1){
+        printf("Enter player 1's name (49 characters MAX): ");
+        scanf("%49s", name);
+        int containsComma = 0;
+        for(int i=0;i<strlen(name);i++){
+            if (name[i] == ','){
+                containsComma = 1;
+                break;
+            }
+        }
+        if (containsComma){
+            printf("Name cannot contain ','.\n");
+        }else{
+            break;
+         }
+        }
+        add_to_rank(filename,name,*p1);
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");
@@ -417,7 +500,7 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");
-        scanf("%[^,]",&input);
+        scanf("%d",&input);
         while (input != 1 && input != 2){
         printf("invalid number\n");
         printf("choose from 1 or 2: ");
@@ -444,9 +527,6 @@ void new_game(){
     printf("3- return to the main menu\n");
     printf("choose from 1 to 3: ");
 }
-
-
-
 void Game_logo (){
     printf("                         ___           _             _____       ___                             \n");
     printf("                        (  _`\\        ( )_          (  _  )     (  _`\\                           \n");

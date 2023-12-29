@@ -5,7 +5,7 @@
 #include "functions.h"
 clock_t startTime;
 int Horiz_or_Vert;
-
+int DimRow,DimCol,orient;
 
 void Human_vs_Comp(int board_horiz [Size][Size],int board_vert [Size][Size],int s[Size][Size],int Size){
    player player1;
@@ -25,7 +25,7 @@ void Human_vs_Comp(int board_horiz [Size][Size],int board_vert [Size][Size],int 
    player_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
 }
 void player_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ //player 1 turn func with parameters 1-the horizontal array 2-the vertical array 3-pointer to player 1 score 4-pointer to player 2 score
-  End_Game(Size,p1,p2); // check if the game has ended
+  End_Game(Size,p1,p2,2); // check if the game has ended
   printf("\x1B[34m""Player 1 turn Enter (RRCC) ""\x1B[0m");
   while(scanf("%1d%1d%1d%1d%c",&r1,&r2,&c1,&c2,&extra) != 5 || extra != '\n'){ // scan and check if the input is not digits
         printf("\x1B[34m""Enter a correct place\n""\x1B[0m");
@@ -34,6 +34,7 @@ void player_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 }
   if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]==' '&& (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)){ // here are the conditions for input if the input is horizontal  note: here i used the absolute function to neglect the order of input like 2212 and 2221
     board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]=1; // assignment of move  note again: the ternary operator is used as caution of the input order
+    DimRow=r1-1 ;DimCol=(c2>c1)?(c1-1):(c2-1) ; orient = 'h';
     Game1_score(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2);// calculating the score
     clearScreen();
     print_board(board_horiz,board_vert,s,Size); // print the board
@@ -43,6 +44,7 @@ void player_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
   }
    else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]==' '&& (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)) { // here are the conditions for input if the input is vertical
     board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]=1;
+    DimRow=(r2>r1)?(r1-1):(r2-1) ;DimCol= c1-1 ;orient= 'v';
     Game1_score(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2);
     clearScreen();
     print_board(board_horiz,board_vert,s,Size);
@@ -54,7 +56,7 @@ void player_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
    player_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
 void Comp_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ // same as player 1 func
-     End_Game(Size,p1,p2);
+     End_Game(Size,p1,p2,2);
 
     if (completing_square(board_horiz,board_vert,Size))
         random_move(board_horiz,board_vert,Size);
@@ -69,6 +71,7 @@ void Comp_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size
 }
 void Game1_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int Size,int* p1,int* p2,int Current_Player,int*n1,int*n2){ /* the most important function that calculates scores VIP ,
                                                             Note:the current_player parameter is to detect the current player that has made the last turn and it has previous value of either p1 or p2 depem*/
+    ifGetScore(board_horiz,board_vert,Size,Current_Player,n1,n2,DimRow,DimCol,orient);
     int count_scores=0; //create var to store the sum scores for both players
     for (int row=0 ; row<Size-1 ;row++){
         for (int column=0 ; column<Size-1 ;column++){
