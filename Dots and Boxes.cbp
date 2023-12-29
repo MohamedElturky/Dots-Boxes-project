@@ -31,7 +31,26 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="DFS.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="SaveLoadUndo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="UndoRedo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="computerMode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="functions.h" />
+		<Unit filename="gamePlay.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="rank.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
