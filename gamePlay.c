@@ -93,9 +93,10 @@ void Game_main_menu (){ // hello friend :)
     printf("1- New game\n");
     printf("2- Load game\n");
     printf("3- Rank\n");
+    printf("4- How to play\n");
     printf("choose from 1 to 3: ");
     scanf("%d",&input);
-    while (input != 1 && input != 2 && input != 3){
+    while (input != 1 && input != 2 && input != 3 && input != 4){
         printf("invalid number\n");
         printf("choose from 1 to 3: ");
         scanf("%d",&input);
@@ -109,7 +110,6 @@ void Game_main_menu (){ // hello friend :)
         case(2):
             clearScreen();
             load_game();
-            // load_game;
             printf("\n1- Return to main menu\n");
             printf("2- Exit\n");
             printf("Choose 1 or 2: ");
@@ -124,10 +124,64 @@ void Game_main_menu (){ // hello friend :)
                  Game_main_menu();
             }else{
                  exit(0);
+            }
             break;
         case(3):
             clearScreen();
-            print_rank(filename);
+            Game_logo ();
+            printf("1-Rank of 2*2\n");
+            printf("2-Rank of 5*5\n");
+            scanf("%d",&input);
+            while (input != 1 && input != 2){
+            printf("invalid number\n");
+            printf("choose from 1 or 2: ");
+            scanf("%d",&input);
+            }
+            clearScreen();
+            if(input == 1){
+                print_rank("rank1.csv");
+            }else{
+                print_rank("rank2.csv");
+            }
+            printf("\n1- Return to main menu\n");
+            printf("2- Exit\n");
+            printf("Choose 1 or 2: ");
+            scanf("%d",&input);
+            while (input != 1 && input != 2){
+            printf("invalid number\n");
+            printf("choose from 1 or 2: ");
+            scanf("%d",&input);
+            }
+            if(input == 1){
+                 clearScreen();
+                 Game_main_menu();
+            }else{
+                 exit(0);
+            }
+             break;
+        case(4):
+            clearScreen();
+            Game_logo ();
+            printf("\x1b[1m""Objective:\n""\x1b[0m");
+            printf("The objective of Dots and Boxes is to create more squares than your opponent by connecting dots to form lines.\n\n");
+            printf("\x1b[1m""Setup:\n""\x1b[0m");
+            printf("1.Draw a grid of dots on a piece of paper. The size of the grid can vary, but a common size is 2x2 or 5x5 dots.\n");
+            printf("2.Players take turns connecting two adjacent dots with a horizontal or vertical line.\n\n");
+            printf("\x1b[1m""Gameplay:\n""\x1b[0m");
+            printf("1.The first player, let's call them Player A, draws a line between two dots.\n");
+            printf("2.The players then take turns drawing one line at a time, either horizontally or vertically, connecting two adjacent dots.\n");
+            printf("3.When a player completes the fourth side of a 1x1 square by drawing the fourth line, they earn a point and get to make another move.\n");
+            printf("4.The player who completes a square puts their initial inside it to signify their ownership.\n");
+            printf("5.The game continues until all possible lines have been drawn, and no more squares can be formed.\n\n");
+            printf("\x1b[1m""Strategy:\n""\x1b[0m");
+            printf("1.""\x1b[3m""Closing Squares:""\x1b[0m"" Look for opportunities to close squares, forcing your opponent to give you more chances to draw lines.\n");
+            printf("2.""\x1b[3m""Block Opponent:""\x1b[0m"" Try to anticipate your opponent's moves and block their attempts to close squares.\n");
+            printf("3.""\x1b[3m""Avoid Giving Free Squares:""\x1b[0m"" Be strategic in your line placements to avoid giving your opponent easy opportunities to close squares.\n");
+            printf("4.""\x1b[3m""Plan Ahead:""\x1b[0m"" Think ahead and consider the consequences of each move. Sometimes sacrificing a small square now may lead to a bigger one later.\n\n");
+            printf("\x1b[1m""Winning the Game:\n""\x1b[0m");
+            printf("The game ends when no more lines can be drawn. The player with the most squares at the end of the game is the winner.\n\n");
+            printf("\x1b[1m""Variant:\n""\x1b[0m");
+            printf("For a more challenging game, play with a larger grid or use different shapes for the dots.\n");
             printf("\n1- Return to main menu\n");
             printf("2- Exit\n");
             printf("Choose 1 or 2: ");
@@ -145,7 +199,6 @@ void Game_main_menu (){ // hello friend :)
             }
              break;
        }
-    }
 }
 void print_board(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int Size){ //printing the board after each move
  int row=0,column=0;
@@ -228,7 +281,10 @@ void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
     redo(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2,DimRow,DimCol ,orient);
     else if (r1==9 && r2 ==9 && c1==9 && c2==9)
    save_game(Size,p1,p2,n1,n2,1);
-   else{printf("\x1B[34m""Enter a correct place\n""\x1B[0m"); // another try to enter the input if it was wrong
+   else if(r1==8 && r2 ==8 && c1==8 && c2==8){
+    clearScreen();
+    Game_main_menu ();
+   }else{printf("\x1B[34m""Enter a correct place\n""\x1B[0m"); // another try to enter the input if it was wrong
    player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
 void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ // same as player 1 func
@@ -268,7 +324,10 @@ void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
     redo(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2,DimRow,DimCol ,orient);
     else if (r1==9 && r2 ==9 && c1==9 && c2==9)
    save_game(Size,p1,p2,n1,n2,2);
-   else{printf("\x1B[31m""Enter a correct place\n""\x1B[0m");
+   else if(r1==8 && r2 ==8 && c1==8 && c2==8){
+    clearScreen();
+    Game_main_menu ();
+   }else{printf("\x1B[31m""Enter a correct place\n""\x1B[0m");
    player2_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
 void Human_vs_Human (int board_horiz [Size][Size],int board_vert [Size][Size],int s[Size][Size],int Size){ //choosing the mode  Note this func id called in Determine Dim func and will be changed later
@@ -337,6 +396,8 @@ void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 }
 void print_scores (int Size,int score1, int score2,int move1, int move2){ //just printing the score , the No. of moves and time..boring..Zzz
    clock_t endTime =clock();//end checkpoint for time
+   printf("\x1b[33m""\t\t\tfor save enter(9999)""\x1b[0m" "\x1b[33m""                  for main menu enter(8888)\n""\x1b[0m");
+   printf("\x1b[33m""\t\t\tfor undo enter(0000)""\x1b[0m" "\x1b[33m""                  for redo enter(1111)\n""\x1b[0m");
    printf("\x1B[34m""\t\t\tplayer 1 score : %d ""\x1B[0m""\x1B[31m""                   player 2 score :%d\n""\x1B[0m",score1,score2);
    printf("\x1B[34m""\t\t\tplayer 1 No. of moves : %d   ""\x1B[0m""\x1B[31m""          player 2 No. of moves :%d\n\n""\x1B[0m",move1,move2);
    double timePassed = (endTime-startTime)/CLOCKS_PER_SEC;
@@ -364,7 +425,11 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
             break;
          }
         }
-        add_to_rank(filename,name,*p1);
+        if(Size == 3){
+            add_to_rank("rank1.csv",name,*p1);
+        }else if(Size == 6){
+            add_to_rank("rank2.csv",name,*p1);
+        }
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");
@@ -398,7 +463,11 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
             break;
          }
         }
-        add_to_rank(filename,name,*p2);
+        if(Size == 3){
+            add_to_rank("rank1.csv",name,*p1);
+        }else if(Size == 6){
+            add_to_rank("rank2.csv",name,*p1);
+        }
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");
@@ -449,7 +518,11 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
             break;
          }
         }
-        add_to_rank(filename,name,*p1);
+        if(Size == 3){
+            add_to_rank("rank1.csv",name,*p1);
+        }else if(Size == 6){
+            add_to_rank("rank2.csv",name,*p1);
+        }
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");
@@ -483,7 +556,11 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
             break;
          }
         }
-        add_to_rank(filename,name,*p1);
+        if(Size == 3){
+            add_to_rank("rank1.csv",name,*p1);
+        }else if(Size == 6){
+            add_to_rank("rank2.csv",name,*p1);
+        }
         while(1){
         printf("Enter player 2's name (49 characters MAX): ");
         scanf("%49s", name);
@@ -500,7 +577,11 @@ if (*(p1) + *(p2) == (Size-1)*(Size-1)){ // look at this line, it will check if 
             break;
          }
         }
-        add_to_rank(filename,name,*p2);
+        if(Size == 3){
+            add_to_rank("rank1.csv",name,*p1);
+        }else if(Size == 6){
+            add_to_rank("rank2.csv",name,*p1);
+        }
         printf("1-Return to the main menu\n");
         printf("2-Exit\n");
         printf("Choose 1 or 2: ");

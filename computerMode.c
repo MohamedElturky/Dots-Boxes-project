@@ -60,7 +60,10 @@ void player_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
     redo_comp(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2,DimRow,DimCol ,orient);
       else if (r1==9 && r2 ==9 && c1==9 && c2==9)
    save_game(Size,p1,p2,n1,n2,3);
-   else{printf("\x1B[34m""Enter a correct place\n""\x1B[0m"); // another try to enter the input if it was wrong
+   else if(r1==8 && r2 ==8 && c1==8 && c2==8){
+    clearScreen();
+    Game_main_menu ();
+   }else{printf("\x1B[34m""Enter a correct place\n""\x1B[0m"); // another try to enter the input if it was wrong
    player_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
 void Comp_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ // same as player 1 func

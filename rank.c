@@ -3,15 +3,15 @@
 #include <string.h>
 #include "functions.h"
 
-void create_rank_file(const char *filename){
+void create_rank_file(char *filename){
     FILE *file1 = fopen(filename, "w");
     if (file1 == NULL) {
-        printf("Error: can't find file");
+        perror("Error: can't find file");
         exit(1);
     }
     fclose(file1);
 }
-void print_rank(const char *filename){
+void print_rank(char *filename){
     Sort_rank(filename);
     FILE *file=fopen(filename,"r");
     if (file == NULL){
@@ -41,7 +41,7 @@ void print_rank(const char *filename){
     }
     fclose(file);
 }
-void add_to_rank(const char *filename,char *name,int *p){
+void add_to_rank(char *filename,char *name,int *p){
     FILE *file=fopen(filename,"r");
     if (file == NULL){
         create_rank_file(filename);
@@ -84,7 +84,7 @@ void add_to_rank(const char *filename,char *name,int *p){
      }
      Sort_rank(filename);
 }
-void Sort_rank(const char *filename) {
+void Sort_rank(char *filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL){
         create_rank_file(filename);

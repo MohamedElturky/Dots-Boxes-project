@@ -16,7 +16,7 @@ extern char extra;
 extern char name[50];
 extern char ranking[11];
 
-extern const char *filename;
+extern char *filename;
 extern FILE *savedGame;
 extern FILE *savedScore;
 typedef struct{
@@ -42,9 +42,9 @@ void delete_next_redo ();
 void Game_score();
 void save();
 void Game_logo();
-void create_rank_file(const char *filename);
-void print_rank(const char *filename);
-void add_to_rank(const char *filename, char *name,int *p);
+void create_rank_file(char *filename);
+void print_rank(char *filename);
+void add_to_rank(char *filename, char *name,int *p);
 void save_game();
 void load_game();
 #endif // FUNCTIONS_H_INCLUDED
