@@ -108,7 +108,7 @@ void Game_main_menu (){ // hello friend :)
             break;
         case(2):
             clearScreen();
-            printf("coming soon");
+            load_game();
             // load_game;
             printf("\n1- Return to main menu\n");
             printf("2- Exit\n");
@@ -226,6 +226,8 @@ void player1_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
     undo(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2,DimRow,DimCol ,orient);
      else if (r1==1 && r2 ==1 && c1==1 && c2==1)
     redo(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2,DimRow,DimCol ,orient);
+    else if (r1==9 && r2 ==9 && c1==9 && c2==9)
+   save_game(Size,p1,p2,n1,n2,1);
    else{printf("\x1B[34m""Enter a correct place\n""\x1B[0m"); // another try to enter the input if it was wrong
    player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
@@ -264,6 +266,8 @@ void player2_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
     undo(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2,DimRow,DimCol ,orient);
     else if (r1==1 && r2 ==1 && c1==1 && c2==1)
     redo(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2,DimRow,DimCol ,orient);
+    else if (r1==9 && r2 ==9 && c1==9 && c2==9)
+   save_game(Size,p1,p2,n1,n2,2);
    else{printf("\x1B[31m""Enter a correct place\n""\x1B[0m");
    player2_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
@@ -281,12 +285,12 @@ void Human_vs_Human (int board_horiz [Size][Size],int board_vert [Size][Size],in
    int *p2=&player2.score;
    clearScreen();
    initilaize_Board(board_horiz,board_vert);
-   initialize_Redo_Log(Size);
+   initialize_Redo_Log(Size,n1,n2,1);
    player1_turn(board_horiz,board_vert,s,p1,p2,n1,n2); // here the first turn will be called
 }
 void Game_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int Size,int* p1,int* p2,int Current_Player,int*n1,int*n2,int DimRow,int DimCol ,int orient){ /* the most important function that calculates scores VIP ,
                                                             Note:the current_player parameter is to detect the current player that has made the last turn and it has previous value of either p1 or p2 depem*/
-    if (!undoM || redoM) ifGetScore(board_horiz,board_vert,Size,Current_Player,n1,n2,DimRow,DimCol,orient);
+    if (!undoM || redoM) DFS(board_horiz,board_vert,Size,Current_Player,n1,n2,DimRow,DimCol,orient);
     int count_scores=0; //create var to store the sum scores for both players
     for (int row=0 ; row<Size-1 ;row++){
         for (int column=0 ; column<Size-1 ;column++){

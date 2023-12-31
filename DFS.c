@@ -5,7 +5,7 @@
 #include "functions.h"
 int cell_1[2][2];
 int cell_2[5][5];
-void ifGetScore (int board_horiz[Size][Size],int board_vert[Size][Size],int Size,int Current_Player,int*n1,int*n2,int DimRow, int DimCol,int orient){
+void DFS (int board_horiz[Size][Size],int board_vert[Size][Size],int Size,int Current_Player,int*n1,int*n2,int DimRow, int DimCol,int orient){
    if(Size == 3){
     if (orient == 'h'){
         initialize_cell(cell_1);

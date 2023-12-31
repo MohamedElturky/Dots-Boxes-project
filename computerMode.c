@@ -21,7 +21,7 @@ void Human_vs_Comp(int board_horiz [Size][Size],int board_vert [Size][Size],int 
    int *p2=&comp.score;
    clearScreen();
    initilaize_Board(board_horiz,board_vert);
-
+   initialize_Redo_Log(Size,n1,n2,2);
    player_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
 }
 void player_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ //player 1 turn func with parameters 1-the horizontal array 2-the vertical array 3-pointer to player 1 score 4-pointer to player 2 score
@@ -34,36 +34,46 @@ void player_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Si
 }
   if (r1==r2 && c1!=c2 && fabs(c1-c2)==1 && board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]==' '&& (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)){ // here are the conditions for input if the input is horizontal  note: here i used the absolute function to neglect the order of input like 2212 and 2221
     board_horiz[r1-1][(c2>c1)?(c1-1):(c2-1)]=1; // assignment of move  note again: the ternary operator is used as caution of the input order
-    DimRow=r1-1 ;DimCol=(c2>c1)?(c1-1):(c2-1) ; orient = 'h';
+    DimRow=r1-1 ;DimCol=(c2>c1)?(c1-1):(c2-1) ; orient = 'h';undoM =0,redoM=0;
+    saveRedoLog(Size,DimRow,DimCol,orient,1,n1,n2);
+    delete_next_redo (Size,n1,n2);
     Game1_score(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2);// calculating the score
     clearScreen();
     print_board(board_horiz,board_vert,s,Size); // print the board
-    (*n1)++;
     print_scores(Size,*p1,*p2,*n1,*n2); // print the scores
     Comp_turn(board_horiz,board_vert,s,p1,p2,n1,n2); // it is time for the another player move
   }
    else if (c1==c2 && r1!=r2 && fabs(r1-r2)== 1 && board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]==' '&& (r1<=Size && r2<=Size && c1<=Size && c2<=Size ) && (r1>=1 && r2>=1 &&c1>=1 && c2>=1)) { // here are the conditions for input if the input is vertical
     board_vert[(r2>r1)?(r1-1):(r2-1)][c1-1]=1;
-    DimRow=(r2>r1)?(r1-1):(r2-1) ;DimCol= c1-1 ;orient= 'v';
+    DimRow=(r2>r1)?(r1-1):(r2-1) ;DimCol= c1-1 ;orient= 'v';undoM =0,redoM=0;
+    saveRedoLog(Size,DimRow,DimCol,orient,1,n1,n2);
+    delete_next_redo (Size,n1,n2);
     Game1_score(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2);
     clearScreen();
     print_board(board_horiz,board_vert,s,Size);
-    (*n1)++;
     print_scores(Size,*p1,*p2,*n1,*n2);
     Comp_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
    }
+    else if (r1==0 && r2 ==0 && c1==0 && c2==0)
+    undo_comp(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2,DimRow,DimCol ,orient);
+    else if (r1==1 && r2 ==1 && c1==1 && c2==1)
+    redo_comp(board_horiz,board_vert,s,Size,p1,p2,1,n1,n2,DimRow,DimCol ,orient);
+      else if (r1==9 && r2 ==9 && c1==9 && c2==9)
+   save_game(Size,p1,p2,n1,n2,3);
    else{printf("\x1B[34m""Enter a correct place\n""\x1B[0m"); // another try to enter the input if it was wrong
    player_turn(board_horiz,board_vert,s,p1,p2,n1,n2);}
 }
 void Comp_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int*p1,int*p2,int*n1,int*n2){ // same as player 1 func
      End_Game(Size,p1,p2,2);
 
-    if (completing_square(board_horiz,board_vert,Size))
-        random_move(board_horiz,board_vert,Size);
+   // if (completing_square(board_horiz,board_vert,Size,n1,n2))
+        random_move(board_horiz,board_vert,Size,n1,n2);
+         (Size==3)?(DimRow=redo_log1[*n1+*n2-1][0]):(DimRow=redo_log2[*n1+*n2-1][0]);
+         (Size==3)?( DimCol=redo_log1[*n1+*n2-1][1]):( DimCol=redo_log2[*n1+*n2-1][1]);
+         (Size==3)?(orient=redo_log1[*n1+*n2-1][3]):(orient=redo_log2[*n1+*n2-1][3]);
     Game1_score(board_horiz,board_vert,s,Size,p1,p2,2,n1,n2);
     clearScreen();
     print_board(board_horiz,board_vert,s,Size);
-    (*n2)++;
     print_scores(Size,*p1,*p2,*n1,*n2);
     player_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
 
@@ -71,7 +81,7 @@ void Comp_turn(int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size
 }
 void Game1_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[Size][Size],int Size,int* p1,int* p2,int Current_Player,int*n1,int*n2){ /* the most important function that calculates scores VIP ,
                                                             Note:the current_player parameter is to detect the current player that has made the last turn and it has previous value of either p1 or p2 depem*/
-    ifGetScore(board_horiz,board_vert,Size,Current_Player,n1,n2,DimRow,DimCol,orient);
+    if (!undoM || redoM) DFS(board_horiz,board_vert,Size,Current_Player,n1,n2,DimRow,DimCol,orient);
     int count_scores=0; //create var to store the sum scores for both players
     for (int row=0 ; row<Size-1 ;row++){
         for (int column=0 ; column<Size-1 ;column++){
@@ -82,6 +92,11 @@ void Game1_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
                 if(s[row][column]==0)//check if the score box is completed if not marks it with player number and later will change to player color
                 s[row][column]=Current_Player;
             }
+             else {
+
+                 if(s[row][column] != 0)
+                s[row][column]=0;
+            }
         }
     }
      if (count_scores> *(p1) + *(p2)){//the next step if the score is updated during the last turn the var count_scores will be greater than sum of both scores recorded
@@ -89,7 +104,6 @@ void Game1_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
                         *p1 += count_scores-(*p1 + *p2);
                         clearScreen();
                         print_board(board_horiz,board_vert,s,Size);
-                        (*n1)++;
                         print_scores(Size,*p1,*p2,*n1,*n2);
                         player_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
                     }
@@ -97,13 +111,32 @@ void Game1_score (int board_horiz[Size][Size],int board_vert[Size][Size],int s[S
                         *p2 += count_scores-(*p1 + *p2);
                         clearScreen();
                         print_board(board_horiz,board_vert,s,Size);
-                        (*n2)++;
                         print_scores(Size,*p1,*p2,*n1,*n2);
                         Comp_turn(board_horiz,board_vert,s,p1,p2,n1,n2);
                     }
      }
+     else if (count_scores< *(p1) + *(p2)){//for undo
+                   if(Size == 3){
+                    if(redo_log1[*n1+*n2][2] == 1) {
+                         *p1 -= (*p1 + *p2)-count_scores;
+                    }
+                    else {
+                        *p2 -= (*p1 + *p2)-count_scores;
+
+                    }
+                   }
+                    else if(Size == 6){
+                    if(redo_log2[*n1+*n2][2] == 1) {
+                         *p1 -= (*p1 + *p2)-count_scores;
+                    }
+                    else {
+                        *p2 -= (*p1 + *p2)-count_scores;
+
+                    }
+                   }
+     }
 }
-void random_move (int board_horiz [Size][Size],int board_vert [Size][Size],int Size){
+void random_move (int board_horiz [Size][Size],int board_vert [Size][Size],int Size,int *n1,int*n2){
    int i=0,j=0;
    int random_H;
    int random_V;
@@ -133,6 +166,8 @@ void random_move (int board_horiz [Size][Size],int board_vert [Size][Size],int S
                 if(board_horiz[row][column] == ' ') {
                     if (random_H == count){
                        board_horiz[row][column] = 2;
+                       saveRedoLog(Size,row,column,'h',2,n1,n2);
+                       delete_next_redo (Size,n1,n2);
                        found = 1;
                     }
                        count++;
@@ -148,6 +183,8 @@ void random_move (int board_horiz [Size][Size],int board_vert [Size][Size],int S
                 if(board_vert[row][column] == ' ') {
                     if (random_V == count){
                        board_vert[row][column] = 2;
+                       saveRedoLog(Size,row,column,'v',2,n1,n2);
+                       delete_next_redo (Size,n1,n2);
                        found = 1;
                     }
                        count++;
@@ -164,6 +201,8 @@ void random_move (int board_horiz [Size][Size],int board_vert [Size][Size],int S
                     if(board_horiz[row][column] == ' ') {
                       if (random_H == count){
                         board_horiz[row][column] = 2;
+                        saveRedoLog(Size,row,column,'h',2,n1,n2);
+                        delete_next_redo (Size,n1,n2);
                         found = 1;
                       }
                         count++;
@@ -179,6 +218,8 @@ void random_move (int board_horiz [Size][Size],int board_vert [Size][Size],int S
                        if(board_vert[row][column] == ' ') {
                            if (random_V == count){
                              board_vert[row][column] = 2;
+                             saveRedoLog(Size,row,column,'v',2,n1,n2);
+                             delete_next_redo (Size,n1,n2);
                              found = 1;
                            }
                        count++;
@@ -189,7 +230,7 @@ void random_move (int board_horiz [Size][Size],int board_vert [Size][Size],int S
         }
     }
 }
-int completing_square (int board_horiz [Size][Size],int board_vert [Size][Size],int Size){
+int completing_square (int board_horiz [Size][Size],int board_vert [Size][Size],int Size,int*n1,int*n2){
 
   int found =0;
 
@@ -198,24 +239,32 @@ int completing_square (int board_horiz [Size][Size],int board_vert [Size][Size],
         for (int column=0 ; column<Size-1 ;column++){
             if (board_horiz[row][column]!=' ' && board_vert[row][column]!=' ' && board_horiz[row+1][column]!=' ' && board_vert[row][column+1]==' '){
             board_vert[row][column+1]=2;
+            saveRedoLog(Size,row,column+1,'v',2,n1,n2);
+            delete_next_redo (Size,n1,n2);
             found=1;
             return 0;
             break;
         }
-                    if (board_horiz[row][column]!=' ' && board_vert[row][column]!=' ' && board_horiz[row+1][column]==' ' && board_vert[row][column+1]!=' '){
+            if (board_horiz[row][column]!=' ' && board_vert[row][column]!=' ' && board_horiz[row+1][column]==' ' && board_vert[row][column+1]!=' '){
             board_horiz[row+1][column]=2;
+            saveRedoLog(Size,row+1,column,'h',2,n1,n2);
+            delete_next_redo (Size,n1,n2);
             found=1;
             return 0;
             break;
         }
-                    if (board_horiz[row][column]!=' ' && board_vert[row][column]==' ' && board_horiz[row+1][column]!=' ' && board_vert[row][column+1]!=' '){
+            if (board_horiz[row][column]!=' ' && board_vert[row][column]==' ' && board_horiz[row+1][column]!=' ' && board_vert[row][column+1]!=' '){
             board_vert[row][column]=2;
+            saveRedoLog(Size,row,column,'v',2,n1,n2);
+            delete_next_redo (Size,n1,n2);
             found=1;
             return 0;
             break;
         }
-                    if (board_horiz[row][column]==' ' && board_vert[row][column]!=' ' && board_horiz[row+1][column]!=' ' && board_vert[row][column+1]!=' '){
+            if (board_horiz[row][column]==' ' && board_vert[row][column]!=' ' && board_horiz[row+1][column]!=' ' && board_vert[row][column+1]!=' '){
             board_horiz[row][column]=2;
+            saveRedoLog(Size,row,column,'v',2,n1,n2);
+            delete_next_redo (Size,n1,n2);
             found=1;
             return 0;
             break;
