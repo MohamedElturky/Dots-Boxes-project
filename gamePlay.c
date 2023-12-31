@@ -173,6 +173,8 @@ void Game_main_menu (){ // hello friend :)
             printf("3.When a player completes the fourth side of a 1x1 square by drawing the fourth line, they earn a point and get to make another move.\n");
             printf("4.The player who completes a square puts their initial inside it to signify their ownership.\n");
             printf("5.The game continues until all possible lines have been drawn, and no more squares can be formed.\n\n");
+            printf("\x1b[1m""Input:\n""\x1b[0m");
+            printf("The input will be in the form(RRCC) example:(1112) to draw the horizontal line at the top left corner.\n\n");
             printf("\x1b[1m""Strategy:\n""\x1b[0m");
             printf("1.""\x1b[3m""Closing Squares:""\x1b[0m"" Look for opportunities to close squares, forcing your opponent to give you more chances to draw lines.\n");
             printf("2.""\x1b[3m""Block Opponent:""\x1b[0m"" Try to anticipate your opponent's moves and block their attempts to close squares.\n");
