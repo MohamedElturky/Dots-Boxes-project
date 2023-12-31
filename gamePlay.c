@@ -51,14 +51,14 @@ while(scanf("%1d%c",&boardDim,&extra) != 2 || extra != '\n'){ // scan and check 
      printf("2- Human vs AI\n");
      printf("3- Return\n");
      printf("Enter 1 or 2 or 3: ");
-     while (scanf("%d",&input)!=1) {
+     while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
             printf("Invalid input\nEnter 1 or 2 or 3: ");
             int c;
             while ((c=getchar())!='\n' && c!=EOF);
         }
         while (input!=1 && input!=2 && input!=3) {
             printf("Invalid number. Please choose from 1 to 3: ");
-            while (scanf("%d",&input)!=1) {
+            while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
                 printf("Invalid input\nEnter 1 or 2 or 3: ");
                 int c;
                 while ((c=getchar())!='\n' && c!=EOF);
@@ -83,14 +83,14 @@ while(scanf("%1d%c",&boardDim,&extra) != 2 || extra != '\n'){ // scan and check 
      printf("3- Return\n");
      printf("Enter 1 or 2 or 3: ");
      scanf("%d",&input);
-     while (scanf("%d",&input)!=1) {
+     while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
         printf("Invalid input\nEnter 1 or 2 or 3: ");
         int c;
         while ((c=getchar())!='\n' && c!=EOF);
         }
         while (input!=1 && input!=2 && input!=3) {
             printf("Invalid number. Please choose from 1 to 3: ");
-            while (scanf("%d",&input)!=1) {
+            while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
                 printf("Invalid input\nEnter 1 or 2 or 3: ");
                 int c;
                 while ((c=getchar())!='\n' && c!=EOF);
@@ -122,14 +122,14 @@ void Game_main_menu (){ // hello friend :)
     printf("3- Rank\n");
     printf("4- How to play\n");
     printf("choose from 1 to 4: ");
-    while (scanf("%d",&input)!=1) {
+    while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
         printf("Invalid input\nEnter 1 or 2 or 3 or 4: ");
         int c;
         while ((c=getchar())!='\n' && c!=EOF);
     }
     while (input!=1 && input!=2 && input!=3 && input!=4) {
         printf("Invalid number. Please choose from 1 to 4: ");
-        while (scanf("%d",&input)!=1) {
+        while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
             printf("Invalid input\nEnter 1 or 2 or 3 or 4: ");
             int c;
             while ((c=getchar())!='\n' && c!=EOF);
@@ -147,14 +147,14 @@ void Game_main_menu (){ // hello friend :)
             printf("\n1- Return to main menu\n");
             printf("2- Exit\n");
             printf("Choose 1 or 2: ");
-            while (scanf("%d",&input)!=1) {
+            while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
                 printf("Invalid input\nEnter 1 or 2: ");
                 int c;
                 while ((c=getchar())!='\n' && c!=EOF);
             }
             while (input!=1 && input!=2) {
                 printf("Invalid number. Please choose from 1 or 2: ");
-                while (scanf("%d",&input)!=1) {
+                while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
                     printf("Invalid input\nEnter 1 or 2: ");
                     int c;
                     while ((c=getchar())!='\n' && c!=EOF);
@@ -174,14 +174,14 @@ void Game_main_menu (){ // hello friend :)
             printf("2-Rank of 5*5\n");
             printf("3-Return to main menu\n");
             printf("choose from 1 or 2 or 3: ");
-            while (scanf("%d",&input)!=1) {
+            while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
                 printf("Invalid input\nEnter 1 or 2 or 3: ");
                 int c;
                 while ((c=getchar())!='\n' && c!=EOF);
             }
             while (input!=1 && input!=2 && input!=3) {
                 printf("Invalid number. Please choose from 1 to 3: ");
-                while (scanf("%d",&input)!=1) {
+                while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
                     printf("Invalid input\nEnter 1 or 2 or 3: ");
                     int c;
                     while ((c=getchar())!='\n' && c!=EOF);
@@ -199,14 +199,14 @@ void Game_main_menu (){ // hello friend :)
             printf("\n1- Return to main menu\n");
             printf("2- Exit\n");
             printf("Choose 1 or 2: ");
-            while (scanf("%d",&input)!=1) {
+            while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
                 printf("Invalid input\nEnter 1 or 2: ");
                 int c;
                 while ((c=getchar())!='\n' && c!=EOF);
             }
             while (input!=1 && input!=2) {
                 printf("Invalid number. Please choose from 1 or 2: ");
-                while (scanf("%d",&input)!=1) {
+                while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
                     printf("Invalid input\nEnter 1 or 2: ");
                     int c;
                     while ((c=getchar())!='\n' && c!=EOF);
@@ -247,14 +247,14 @@ void Game_main_menu (){ // hello friend :)
             printf("\n1- Return to main menu\n");
             printf("2- Exit\n");
             printf("Choose 1 or 2: ");
-            while (scanf("%d",&input)!=1) {
+            while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
                 printf("Invalid input\nEnter 1 or 2: ");
                 int c;
                 while ((c=getchar())!='\n' && c!=EOF);
             }
             while (input!=1 && input!=2) {
                 printf("Invalid number. Please choose from 1 or 2: ");
-                while (scanf("%d",&input)!=1) {
+                while (scanf("%d%c",&input,&extra)!=2 || extra != '\n') {
                     printf("Invalid input\nEnter 1 or 2: ");
                     int c;
                     while ((c=getchar())!='\n' && c!=EOF);
